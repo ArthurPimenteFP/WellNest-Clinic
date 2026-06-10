@@ -1,0 +1,119 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Funções — WellNest Clinic{% endblock %}
+{% block page_title %}Funções de Usuário{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Funções</li>
+        </ol>
+    </nav>
+    <a href="{{ url_for('funcoes_cadastrar') }}" class="btn btn-primary">
+        <i class="bi bi-shield-plus me-2"></i>Cadastrar Função
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                        <th>Permissões</th>
+                        <th>Status</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in dados %}
+                    <tr>
+                        <td>{{ d.id_funcao }}</td>
+                        <td class="fw-semibold">{{ d.nome }}</td>
+                        <td>{{ d.descricao }}</td>
+                        <td>
+                            {% if d.gerenciar_usuario %}<span class="badge bg-primary-subtle text-primary me-1">Usuários</span>{% endif %}
+                            {% if d.gerenciar_paciente %}<span class="badge bg-success-subtle text-success me-1">Pacientes</span>{% endif %}
+                            {% if d.gerenciar_consulta %}<span class="badge bg-info-subtle text-info me-1">Consultas</span>{% endif %}
+                            {% if d.gerenciar_funcao %}<span class="badge bg-warning-subtle text-warning me-1">Funções</span>{% endif %}
+                        </td>
+                        <td>
+                            {% if d.status == 'Ativo' or d.status == 1 %}
+                            <span class="badge bg-success">Ativo</span>
+                            {% else %}
+                            <span class="badge bg-danger">Inativo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ url_for('funcoes_visualizar', id=d.id_funcao) }}"
+                               class="btn btn-sm btn-outline-info" title="Visualizar">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ url_for('funcoes_alterar', id=d.id_funcao) }}"
+                               class="btn btn-sm btn-outline-warning" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                    data-bs-toggle="modal" data-bs-target="#modalExcluir"
+                                    data-id="{{ d.id_funcao }}" data-nome="{{ d.nome }}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-shield me-2"></i>Nenhuma função cadastrada.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir a função <strong id="excluirNome"></strong>?<br>
+                Esta ação não poderá ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formExcluir" method="POST">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modal = document.getElementById('modalExcluir');
+    modal.addEventListener('show.bs.modal', function (e) {
+        const b = e.relatedTarget;
+        document.getElementById('excluirNome').textContent = b.getAttribute('data-nome');
+        document.getElementById('formExcluir').action = '/funcoes/excluir/' + b.getAttribute('data-id');
+    });
+</script>
+{% endblock %}

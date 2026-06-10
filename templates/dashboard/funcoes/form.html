@@ -1,0 +1,95 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}{{ titulo }} — WellNest Clinic{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('funcoes_listar') }}">Funções</a></li>
+            <li class="breadcrumb-item active">{{ titulo }}</li>
+        </ol>
+    </nav>
+</div>
+
+<form action="{{ url_for('funcoes_alterar', id=item.id_funcao) if modo == 'alterar' else url_for('funcoes_cadastrar') }}" method="POST">
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white fw-semibold py-3">
+            <i class="bi bi-shield-fill me-2 text-primary"></i>Dados da Função
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Nome da Função <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="nome"
+                           value="{{ item.nome if item else '' }}"
+                           placeholder="Ex.: Médico, Recepcionista" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select class="form-select" name="status">
+                        <option value="Ativo" {{ 'selected' if not item or item.status == 'Ativo' else '' }}>Ativo</option>
+                        <option value="Inativo" {{ 'selected' if item and item.status == 'Inativo' else '' }}>Inativo</option>
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Descrição</label>
+                    <textarea class="form-control" rows="3" name="descricao"
+                        placeholder="Descreva as responsabilidades desta função">{{ item.descricao if item else '' }}</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-white fw-semibold py-3">
+            <i class="bi bi-toggles me-2 text-primary"></i>Permissões
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input name="gerenciar_usuario" class="form-check-input" type="checkbox" id="perm_usuarios"
+                               {{ 'checked' if item and item.gerenciar_usuario else '' }}>
+                        <label class="form-check-label" for="perm_usuarios">Gerenciar Usuários</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input name="gerenciar_funcao" class="form-check-input" type="checkbox" id="perm_funcoes"
+                               {{ 'checked' if item and item.gerenciar_funcao else '' }}>
+                        <label class="form-check-label" for="perm_funcoes">Gerenciar Funções</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input name="gerenciar_paciente" class="form-check-input" type="checkbox" id="perm_pacientes"
+                               {{ 'checked' if item and item.gerenciar_paciente else '' }}>
+                        <label class="form-check-label" for="perm_pacientes">Gerenciar Pacientes</label>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-check">
+                        <input name="gerenciar_consulta" class="form-check-input" type="checkbox" id="perm_consultas"
+                               {{ 'checked' if item and item.gerenciar_consulta else '' }}>
+                        <label class="form-check-label" for="perm_consultas">Gerenciar Consultas</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{{ url_for('funcoes_listar') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Cancelar
+        </a>
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-check-lg me-2"></i>Salvar
+        </button>
+    </div>
+</form>
+
+{% endblock %}
