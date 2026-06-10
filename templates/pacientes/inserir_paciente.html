@@ -1,0 +1,93 @@
+{% extends 'base.html' %} <!-- Herda o layout base -->
+
+{% block titulo %}Novo Paciente — WellNest Clinic{% endblock %} <!-- Título da página -->
+
+{% block conteudo %} <!-- Início do conteúdo -->
+<div class="fade-in"> <!-- Container com animação -->
+
+    <!-- Cabeçalho da página -->
+    <div class="page-heading">
+        <h2 class="text-primary-custom">
+            <i class="bi bi-person-plus-fill me-2"></i>Novo Paciente
+        </h2>
+    </div>
+
+    <!-- Card principal -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Formulário para cadastro de paciente -->
+            <form method="POST" action="{{ url_for('inserir_paciente') }}">
+
+                <!-- Linha: nome e CPF -->
+                <div class="row">
+
+                    <!-- Campo nome completo -->
+                    <div class="col-md-6 mb-3">
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome" name="nome"
+                               placeholder="Nome completo do paciente" required>
+                    </div>
+
+                    <!-- Campo CPF -->
+                    <div class="col-md-6 mb-3">
+                        <label for="cpf" class="form-label">CPF</label>
+                        <input type="text" class="form-control" id="cpf" name="cpf"
+                               placeholder="000.000.000-00" required>
+                    </div>
+                </div>
+
+                <!-- Linha: telefone e email -->
+                <div class="row">
+
+                    <!-- Campo telefone -->
+                    <div class="col-md-6 mb-3">
+                        <label for="telefone" class="form-label">Telefone</label>
+                        <input type="tel" class="form-control" id="telefone" name="telefone"
+                               placeholder="(11) 99999-9999" required>
+                    </div>
+
+                    <!-- Campo email -->
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="paciente@email.com" required>
+                    </div>
+                </div>
+
+                <!-- Linha: convênio -->
+                <div class="row">
+
+                    <!-- Seleção de convênio -->
+                    <div class="col-md-6 mb-3">
+                        <label for="convenio" class="form-label">Convênio</label>
+                        <select class="form-select" id="convenio" name="convenio">
+                            <option value="" selected disabled>Selecione o convênio</option>
+                            <option value="Unimed">Unimed</option>
+                            <option value="Amil">Amil</option>
+                            <option value="SulAmérica">SulAmérica</option>
+                            <option value="Bradesco Saúde">Bradesco Saúde</option>
+                            <option value="Particular">Particular</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="d-flex gap-2 mt-3">
+
+                    <!-- Botão salvar -->
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="bi bi-check-circle me-1"></i>Salvar
+                    </button>
+
+                    <!-- Botão cancelar -->
+                    <a href="{{ url_for('listar_pacientes') }}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} <!-- Fim do conteúdo -->

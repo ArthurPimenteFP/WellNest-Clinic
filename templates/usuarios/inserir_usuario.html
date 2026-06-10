@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block titulo %}Novo Usuário — WellNest Clinic{% endblock %}
+
+{% block conteudo %}
+<div class="fade-in">
+    <div class="page-heading">
+        <h2 class="text-primary-custom"><i class="bi bi-person-plus-fill me-2"></i>Novo Usuário</h2>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+            <form method="POST" action="{{ url_for('inserir_usuario') }}">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nome" class="form-label">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome" name="nome"
+                               placeholder="Digite o nome completo" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">E-mail</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                               placeholder="usuario@wellnest.com" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="perfil" class="form-label">Função / Perfil</label>
+                        <select class="form-select" id="perfil" name="perfil" required>
+                            <option value="" selected disabled>Selecione a função</option>
+                            {% for funcao in funcoes %}
+                            <option value="{{ funcao.id_funcao }}">{{ funcao.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="senha" class="form-label">Senha</label>
+                        <input type="password" class="form-control" id="senha" name="senha"
+                               placeholder="Crie uma senha" required>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="bi bi-check-circle me-1"></i>Salvar
+                    </button>
+                    <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

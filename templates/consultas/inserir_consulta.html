@@ -1,0 +1,110 @@
+{% extends 'base.html' %} <!-- Herda o layout base -->
+
+{% block titulo %}Nova Consulta — WellNest Clinic{% endblock %} <!-- Título da página -->
+
+{% block conteudo %} <!-- Início do conteúdo da página -->
+<div class="fade-in"> <!-- Container com animação -->
+
+    <!-- Cabeçalho da página -->
+    <div class="page-heading">
+        <h2 class="text-primary-custom">
+            <i class="bi bi-calendar-plus-fill me-2"></i>Nova Consulta
+        </h2>
+    </div>
+
+    <!-- Card principal -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4 p-md-5">
+
+            <!-- Formulário para nova consulta -->
+            <form method="POST" action="{{ url_for('inserir_consulta') }}">
+
+                <!-- Linha: paciente e médico -->
+                <div class="row">
+
+                    <!-- Seleção de paciente -->
+                    <div class="col-md-6 mb-3">
+                        <label for="paciente" class="form-label">Paciente</label>
+                        <select class="form-select" id="paciente" name="paciente" required>
+                            <option value="" selected disabled>Selecione o paciente</option>
+                            <option value="Carlos Eduardo Lima">Carlos Eduardo Lima</option>
+                            <option value="Beatriz Oliveira Souza">Beatriz Oliveira Souza</option>
+                            <option value="Fernando Henrique Dias">Fernando Henrique Dias</option>
+                            <option value="Larissa Mendes Rocha">Larissa Mendes Rocha</option>
+                            <option value="Pedro Augusto Ferreira">Pedro Augusto Ferreira</option>
+                        </select>
+                    </div>
+
+                    <!-- Seleção de médico -->
+                    <div class="col-md-6 mb-3">
+                        <label for="medico" class="form-label">Médico</label>
+                        <select class="form-select" id="medico" name="medico" required>
+                            <option value="" selected disabled>Selecione o médico</option>
+                            <option value="Dr. Ricardo Almeida">Dr. Ricardo Almeida</option>
+                            <option value="Dra. Camila Santos">Dra. Camila Santos</option>
+                            <option value="Maria Fernanda Costa">Maria Fernanda Costa</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Linha: data, hora e especialidade -->
+                <div class="row">
+
+                    <!-- Campo de data -->
+                    <div class="col-md-4 mb-3">
+                        <label for="data" class="form-label">Data</label>
+                        <input type="date" class="form-control" id="data" name="data" required>
+                    </div>
+
+                    <!-- Campo de horário -->
+                    <div class="col-md-4 mb-3">
+                        <label for="hora" class="form-label">Horário</label>
+                        <input type="time" class="form-control" id="hora" name="hora" required>
+                    </div>
+
+                    <!-- Seleção de especialidade -->
+                    <div class="col-md-4 mb-3">
+                        <label for="especialidade" class="form-label">Especialidade</label>
+                        <select class="form-select" id="especialidade" name="especialidade" required>
+                            <option value="" selected disabled>Selecione a especialidade</option>
+                            <option value="Clínica Geral">Clínica Geral</option>
+                            <option value="Cardiologia">Cardiologia</option>
+                            <option value="Dermatologia">Dermatologia</option>
+                            <option value="Oftalmologia">Oftalmologia</option>
+                            <option value="Ortopedia">Ortopedia</option>
+                            <option value="Pediatria">Pediatria</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Linha: observações -->
+                <div class="row">
+
+                    <!-- Campo de observações -->
+                    <div class="col-md-12 mb-3">
+                        <label for="observacoes" class="form-label">Observações</label>
+                        <textarea class="form-control" id="observacoes" name="observacoes" rows="3"
+                                  placeholder="Observações sobre a consulta (opcional)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Botões de ação -->
+                <div class="d-flex gap-2 mt-3">
+
+                    <!-- Botão de agendar -->
+                    <button type="submit" class="btn btn-primary-custom">
+                        <i class="bi bi-check-circle me-1"></i>Agendar
+                    </button>
+
+                    <!-- Botão de cancelar -->
+                    <a href="{{ url_for('listar_consultas') }}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle me-1"></i>Cancelar
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} <!-- Fim do conteúdo -->
+

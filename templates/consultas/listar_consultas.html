@@ -1,0 +1,113 @@
+{% extends 'base.html' %} <!-- Herda o layout base -->
+
+{% block titulo %}Consultas — WellNest Clinic{% endblock %} <!-- Define o título da página -->
+
+{% block conteudo %} <!-- Início do conteúdo -->
+<div class="fade-in"> <!-- Container com animação -->
+
+    <!-- Cabeçalho da página -->
+    <div class="page-heading">
+        <h2 class="text-primary-custom">
+            <i class="bi bi-calendar-check-fill me-2"></i>Consultas
+        </h2>
+
+        <!-- Botão para adicionar nova consulta -->
+        <a href="{{ url_for('inserir_consulta') }}" class="btn btn-primary-custom">
+            <i class="bi bi-plus-circle me-1"></i>Nova Consulta
+        </a>
+    </div>
+
+    <!-- Barra de estatísticas -->
+    <div class="stats-bar">
+        <div class="stat-pill">
+            <i class="bi bi-calendar-check-fill"></i>
+
+            <!-- Mostra quantidade total de consultas -->
+            <span>{{ consultas|length }} consultas</span>
+        </div>
+    </div>
+
+    <!-- Tabela responsiva -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle mb-0">
+
+            <!-- Cabeçalho da tabela -->
+            <thead class="table-header-custom">
+                <tr>
+                    <th>ID</th>
+                    <th>Paciente</th>
+                    <th>Médico</th>
+                    <th>Data</th>
+                    <th>Hora</th>
+                    <th>Especialidade</th>
+                    <th>Status</th>
+                    <th class="text-center" style="width:180px">Ações</th>
+                </tr>
+            </thead>
+
+            <!-- Corpo da tabela -->
+            <tbody>
+
+                <!-- Loop que percorre as consultas -->
+                {% for c in consultas %}
+                <tr>
+
+                    <!-- ID da consulta -->
+                    <td class="fw-semibold text-muted">{{ c.id }}</td>
+
+                    <!-- Nome do paciente -->
+                    <td class="fw-semibold">{{ c.paciente }}</td>
+
+                    <!-- Nome do médico -->
+                    <td>{{ c.medico }}</td>
+
+                    <!-- Data da consulta -->
+                    <td>{{ c.data }}</td>
+
+                    <!-- Hora da consulta -->
+                    <td>{{ c.hora }}</td>
+
+                    <!-- Especialidade -->
+                    <td>{{ c.especialidade }}</td>
+
+                    <!-- Status com cores diferentes -->
+                    <td>
+                        {% if c.status == 'Agendada' %}
+                            <span class="badge bg-primary">{{ c.status }}</span>
+
+                        {% elif c.status == 'Confirmada' %}
+                            <span class="badge bg-success">{{ c.status }}</span>
+
+                        {% elif c.status == 'Realizada' %}
+                            <span class="badge bg-info">{{ c.status }}</span>
+
+                        {% elif c.status == 'Cancelada' %}
+                            <span class="badge bg-danger">{{ c.status }}</span>
+
+                        {% else %}
+                            <span class="badge bg-secondary">{{ c.status }}</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Ações (editar e excluir) -->
+                    <td class="text-center">
+
+                        <!-- Botão editar -->
+                        <button class="btn btn-sm btn-warning me-1" title="Editar">
+                            <i class="bi bi-pencil-fill"></i> Editar
+                        </button>
+
+                        <!-- Botão excluir -->
+                        <button class="btn btn-sm btn-danger btn-excluir" title="Excluir">
+                            <i class="bi bi-trash-fill"></i> Excluir
+                        </button>
+
+                    </td>
+                </tr>
+                {% endfor %} <!-- Fim do loop de consultas -->
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} <!-- Fim do conteúdo -->

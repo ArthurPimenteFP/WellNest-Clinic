@@ -1,0 +1,87 @@
+{% extends 'base.html' %} <!-- Herda o layout base do sistema -->
+
+{% block titulo %}Usuários — WellNest Clinic{% endblock %} <!-- Define o título da página -->
+
+{% block conteudo %} <!-- Início do conteúdo principal -->
+<div class="fade-in"> <!-- Container com efeito de fade-in -->
+
+    <!-- Cabeçalho da página -->
+    <div class="page-heading">
+        <h2 class="text-primary-custom">
+            <i class="bi bi-people-fill me-2"></i>Usuários
+        </h2>
+
+        <!-- Botão para adicionar novo usuário -->
+        <a href="{{ url_for('inserir_usuario') }}" class="btn btn-primary-custom">
+            <i class="bi bi-plus-circle me-1"></i>Novo Usuário
+        </a>
+    </div>
+
+    <!-- Barra de estatísticas -->
+    <div class="stats-bar">
+        <div class="stat-pill">
+            <i class="bi bi-people-fill"></i>
+
+            <!-- Quantidade total de usuários -->
+            <span>{{ usuarios|length }} usuários</span>
+        </div>
+    </div>
+
+    <!-- Tabela responsiva de usuários -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle mb-0">
+
+            <!-- Cabeçalho da tabela -->
+            <thead class="table-header-custom">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Perfil</th>
+                    <th class="text-center" style="width:180px">Ações</th>
+                </tr>
+            </thead>
+
+            <!-- Corpo da tabela -->
+            <tbody>
+
+                <!-- Loop pelos usuários -->
+                {% for u in usuarios %}
+                <tr>
+
+                    <!-- ID do usuário -->
+                    <td class="fw-semibold text-muted">{{ u.id }}</td>
+
+                    <!-- Nome do usuário -->
+                    <td class="fw-semibold">{{ u.nome }}</td>
+
+                    <!-- Email do usuário -->
+                    <td>{{ u.email }}</td>
+
+                    <!-- Perfil do usuário -->
+                    <td>
+                        <span class="badge bg-info-custom">{{ u.perfil }}</span>
+                    </td>
+
+                    <!-- Ações (editar/excluir) -->
+                    <td class="text-center">
+
+                        <!-- Botão editar -->
+                        <button class="btn btn-sm btn-warning me-1" title="Editar">
+                            <i class="bi bi-pencil-fill"></i> Editar
+                        </button>
+
+                        <!-- Botão excluir -->
+                        <button class="btn btn-sm btn-danger btn-excluir" title="Excluir">
+                            <i class="bi bi-trash-fill"></i> Excluir
+                        </button>
+
+                    </td>
+                </tr>
+                {% endfor %} <!-- Fim do loop de usuários -->
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} <!-- Fim do conteúdo principal -->

@@ -1,0 +1,136 @@
+{% extends 'base_publica.html' %}
+{% block titulo %}WellNest Clinic — Sua Saúde em Primeiro Lugar{% endblock %}
+
+{% block corpo %}
+<!-- Hero Section -->
+<section class="hero-section text-white text-center d-flex align-items-center">
+    <div class="container">
+        <span class="badge bg-white text-dark px-3 py-2 mb-4 rounded-pill fw-semibold" style="font-size:.85rem">
+            🏥 Sistema de Gestão Clínica
+        </span>
+        <h1 class="display-3 fw-bold mb-3" style="letter-spacing:-1.5px">
+            WellNest Clinic
+        </h1>
+        <p class="lead fs-4 mb-2 fw-light" style="opacity:.95">
+            Cuidando da sua saúde com excelência, tecnologia e carinho.
+        </p>
+        <p class="mb-5 mx-auto fw-light" style="max-width:550px;opacity:.85;font-size:.95rem">
+            Agende consultas, gerencie pacientes e acompanhe toda a operação
+            da sua clínica em um só lugar.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{{ url_for('login') }}" class="btn btn-light btn-lg px-4 fw-semibold shadow-sm" style="border-radius:.6rem">
+                <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
+            </a>
+            <a href="{{ url_for('cadastro') }}" class="btn btn-outline-light btn-lg px-4 fw-semibold" style="border-radius:.6rem">
+                <i class="bi bi-person-plus-fill me-1"></i>Cadastrar-se
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Flash Messages -->
+<div class="container mt-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<!-- Funcionalidades -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge bg-primary-custom-light text-primary-custom rounded-pill px-3 py-2 mb-2" style="background:rgba(13,148,136,.1)!important;font-size:.8rem">
+                Funcionalidades
+            </span>
+            <h2 class="fw-bold text-primary-custom mt-2" style="letter-spacing:-.5px">O que oferecemos</h2>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card card-feature h-100 text-center border-0 p-2">
+                    <div class="card-body p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-people-fill fs-1 text-primary-custom"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Gestão de Usuários</h5>
+                        <p class="card-text text-muted" style="font-size:.9rem">
+                            Controle de acesso com perfis diferenciados para médicos, enfermeiros e recepcionistas.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-feature h-100 text-center border-0 p-2">
+                    <div class="card-body p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-person-badge-fill fs-1 text-primary-custom"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Cadastro de Pacientes</h5>
+                        <p class="card-text text-muted" style="font-size:.9rem">
+                            Registre dados, convênios e histórico dos pacientes de forma segura e organizada.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card card-feature h-100 text-center border-0 p-2">
+                    <div class="card-body p-4">
+                        <div class="feature-icon mb-3">
+                            <i class="bi bi-calendar-check-fill fs-1 text-primary-custom"></i>
+                        </div>
+                        <h5 class="card-title fw-bold">Agendamento de Consultas</h5>
+                        <p class="card-text text-muted" style="font-size:.9rem">
+                            Agende, confirme e acompanhe consultas. Organize a agenda dos médicos facilmente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Especialidades -->
+<section class="py-5 bg-section-alt">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="badge rounded-pill px-3 py-2 mb-2" style="background:rgba(13,148,136,.12)!important;color:var(--cor-primaria)!important;font-size:.8rem">
+                Especialidades
+            </span>
+            <h2 class="fw-bold text-primary-custom mt-2" style="letter-spacing:-.5px">Nossas Áreas Médicas</h2>
+        </div>
+        <div class="row g-4 text-center">
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:var(--radius-lg)">
+                    <i class="bi bi-heart-pulse fs-1 text-danger"></i>
+                    <p class="mt-2 fw-semibold mb-0">Cardiologia</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:var(--radius-lg)">
+                    <i class="bi bi-bandaid fs-1 text-warning"></i>
+                    <p class="mt-2 fw-semibold mb-0">Dermatologia</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:var(--radius-lg)">
+                    <i class="bi bi-eye fs-1 text-info"></i>
+                    <p class="mt-2 fw-semibold mb-0">Oftalmologia</p>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="card border-0 shadow-sm p-4 h-100" style="border-radius:var(--radius-lg)">
+                    <i class="bi bi-clipboard2-pulse fs-1 text-success"></i>
+                    <p class="mt-2 fw-semibold mb-0">Clínica Geral</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

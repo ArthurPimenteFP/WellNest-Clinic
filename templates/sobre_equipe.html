@@ -1,0 +1,68 @@
+{% extends "base_publica.html" %}
+{% block titulo %}Equipe — WellNest Clinic{% endblock %}
+
+{% block corpo %}
+<style>
+    .equipe-avatar img {
+        width: 120px; height: 120px;
+        object-fit: cover; border-radius: 50%;
+        border: 4px solid white; transition: 0.3s;
+    }
+    .equipe-avatar img:hover { transform: scale(1.08); box-shadow: 0 0 20px rgba(0,0,0,0.2); }
+    .hero-equipe { background: linear-gradient(135deg, #1a6fb5, #20a67a); padding: 4rem 0; }
+</style>
+
+<section class="hero-equipe text-white text-center">
+    <div class="container">
+        <span class="badge bg-white text-dark px-3 py-2 mb-3 rounded-pill fw-semibold">👨‍💻 Desenvolvedores</span>
+        <h1 class="display-4 fw-bold">Nossa Equipe</h1>
+        <p class="lead fw-light">Conheça os desenvolvedores por trás do WellNest Clinic</p>
+    </div>
+</section>
+
+<section class="py-5 bg-light">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-5">
+                <div class="card border-0 shadow h-100 text-center">
+                    <div class="card-body p-5">
+                        <div class="equipe-avatar mb-4">
+                            <img src="{{ url_for('static', filename='img/Arthur.png') }}" alt="Arthur">
+                        </div>
+                        <h4 class="fw-bold">Arthur Pimentel Ferreira Parreira</h4>
+                        <p class="text-primary fw-semibold">Desenvolvedor Full Stack</p>
+                        <p class="text-muted"><i class="bi bi-envelope-fill"></i> arthur.pimentel@fatec.sp.gov.br</p>
+                        <p>Estudante de ADS na FATEC. Apaixonado por tecnologia, desenvolvimento web e soluções que impactam pessoas.</p>
+                        <div>
+                            <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-github"></i></a>
+                            <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="card border-0 shadow h-100 text-center">
+                    <div class="card-body p-5">
+                        <div class="equipe-avatar mb-4">
+                            <img src="{{ url_for('static', filename='img/Lui.png') }}" alt="Lui">
+                        </div>
+                        <h4 class="fw-bold">Lui Pantaroto Moschetto</h4>
+                        <p class="text-primary fw-semibold">Desenvolvedor Full Stack</p>
+                        <p class="text-muted"><i class="bi bi-envelope-fill"></i> lui.moschetto@fatec.sp.gov.br</p>
+                        <p>Estudante de ADS na FATEC. Focado em software, banco de dados e soluções para a área da saúde.</p>
+                        <div>
+                            <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-github"></i></a>
+                            <a href="#" class="btn btn-outline-primary btn-sm"><i class="bi bi-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-5">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                <i class="bi bi-arrow-left"></i> Voltar
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %} <!-- Herda o layout base -->
+
+{% block titulo %}Pacientes — WellNest Clinic{% endblock %} <!-- Define o título da página -->
+
+{% block conteudo %} <!-- Início do conteúdo -->
+<div class="fade-in"> <!-- Container com animação -->
+
+    <!-- Cabeçalho da página -->
+    <div class="page-heading">
+        <h2 class="text-primary-custom">
+            <i class="bi bi-person-badge-fill me-2"></i>Pacientes
+        </h2>
+
+        <!-- Botão para cadastrar novo paciente -->
+        <a href="{{ url_for('inserir_paciente') }}" class="btn btn-primary-custom">
+            <i class="bi bi-plus-circle me-1"></i>Novo Paciente
+        </a>
+    </div>
+
+    <!-- Barra de estatísticas -->
+    <div class="stats-bar">
+        <div class="stat-pill">
+            <i class="bi bi-person-badge-fill"></i>
+
+            <!-- Quantidade total de pacientes -->
+            <span>{{ pacientes|length }} pacientes</span>
+        </div>
+    </div>
+
+    <!-- Tabela responsiva -->
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered align-middle mb-0">
+
+            <!-- Cabeçalho da tabela -->
+            <thead class="table-header-custom">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                    <th>E-mail</th>
+                    <th>Convênio</th>
+                    <th class="text-center" style="width:180px">Ações</th>
+                </tr>
+            </thead>
+
+            <!-- Corpo da tabela -->
+            <tbody>
+
+                <!-- Loop que percorre os pacientes -->
+                {% for p in pacientes %}
+                <tr>
+
+                    <!-- ID do paciente -->
+                    <td class="fw-semibold text-muted">{{ p.id }}</td>
+
+                    <!-- Nome do paciente -->
+                    <td class="fw-semibold">{{ p.nome }}</td>
+
+                    <!-- CPF -->
+                    <td>{{ p.cpf }}</td>
+
+                    <!-- Telefone -->
+                    <td>{{ p.telefone }}</td>
+
+                    <!-- Email -->
+                    <td>{{ p.email }}</td>
+
+                    <!-- Convênio -->
+                    <td>
+                        <span class="badge bg-success-custom">{{ p.convenio }}</span>
+                    </td>
+
+                    <!-- Ações -->
+                    <td class="text-center">
+
+                        <!-- Botão editar -->
+                        <button class="btn btn-sm btn-warning me-1" title="Editar">
+                            <i class="bi bi-pencil-fill"></i> Editar
+                        </button>
+
+                        <!-- Botão excluir -->
+                        <button class="btn btn-sm btn-danger btn-excluir" title="Excluir">
+                            <i class="bi bi-trash-fill"></i> Excluir
+                        </button>
+
+                    </td>
+                </tr>
+                {% endfor %} <!-- Fim do loop de pacientes -->
+
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %} <!-- Fim do conteúdo -->
