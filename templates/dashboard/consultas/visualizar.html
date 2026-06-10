@@ -1,0 +1,50 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Visualizar Consulta — WellNest Clinic{% endblock %}
+{% block page_title %}Visualizar Consulta{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('consultas_listar') }}">Consultas</a></li>
+            <li class="breadcrumb-item active">Visualizar</li>
+        </ol>
+    </nav>
+    <a href="{{ url_for('consultas_alterar', id=item.id_consulta) }}" class="btn btn-warning">
+        <i class="bi bi-pencil me-2"></i>Editar
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold py-3">
+        <i class="bi bi-calendar-check me-2 text-primary"></i>Dados da Consulta
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-md-6"><p class="text-muted mb-1 small">Paciente</p><p class="fw-semibold mb-0">{{ item.paciente }}</p></div>
+            <div class="col-md-6"><p class="text-muted mb-1 small">Médico</p><p class="fw-semibold mb-0">{{ item.medico }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Especialidade</p><p class="fw-semibold mb-0">{{ item.especialidade }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Data</p><p class="fw-semibold mb-0">{{ item.data.strftime('%d/%m/%Y') if item.data else '—' }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Hora</p><p class="fw-semibold mb-0">{{ item.hora.strftime('%H:%M') if item.hora else '—' }}</p></div>
+            <div class="col-md-4">
+                <p class="text-muted mb-1 small">Status</p>
+                {% if item.status == 'Realizada' %}<span class="badge bg-success">{{ item.status }}</span>
+                {% elif item.status == 'Agendada' %}<span class="badge bg-primary">{{ item.status }}</span>
+                {% elif item.status == 'Confirmada' %}<span class="badge bg-info text-dark">{{ item.status }}</span>
+                {% else %}<span class="badge bg-danger">{{ item.status }}</span>{% endif %}
+            </div>
+            {% if item.observacoes %}
+            <div class="col-12"><p class="text-muted mb-1 small">Observações</p><p class="mb-0">{{ item.observacoes }}</p></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('consultas_listar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-2"></i>Voltar
+</a>
+
+{% endblock %}

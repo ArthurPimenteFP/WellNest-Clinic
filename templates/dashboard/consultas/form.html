@@ -1,0 +1,87 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}{{ titulo }} — WellNest Clinic{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('consultas_listar') }}">Consultas</a></li>
+            <li class="breadcrumb-item active">{{ titulo }}</li>
+        </ol>
+    </nav>
+</div>
+
+<form action="{{ url_for('consultas_alterar', id=item.id_consulta) if modo == 'alterar' else url_for('consultas_cadastrar') }}" method="POST">
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-header bg-primary text-white fw-semibold">
+            <i class="bi bi-calendar-plus me-2"></i>Dados da Consulta
+        </div>
+        <div class="card-body p-4">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Paciente <span class="text-danger">*</span></label>
+                    <select name="paciente_id" class="form-select" required>
+                        <option value="">Selecione o paciente</option>
+                        {% for p in lista_pacientes %}
+                        <option value="{{ p.id_paciente }}" {{ 'selected' if item and item.paciente_id == p.id_paciente else '' }}>{{ p.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Médico Responsável <span class="text-danger">*</span></label>
+                    <select name="medico_id" class="form-select" required>
+                        <option value="">Selecione o médico</option>
+                        {% for m in lista_medicos %}
+                        <option value="{{ m.id_usuario }}" {{ 'selected' if item and item.medico_id == m.id_usuario else '' }}>{{ m.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Data <span class="text-danger">*</span></label>
+                    <input type="date" name="data" class="form-control"
+                           value="{{ item.data if item else '' }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Hora <span class="text-danger">*</span></label>
+                    <input type="time" name="hora" class="form-control"
+                           value="{{ item.hora if item else '' }}" required>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Status</label>
+                    <select name="status" class="form-select">
+                        {% for s in ['Agendada','Confirmada','Realizada','Cancelada'] %}
+                        <option value="{{ s }}" {{ 'selected' if item and item.status == s else ('selected' if s == 'Agendada' and not item else '') }}>{{ s }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Especialidade <span class="text-danger">*</span></label>
+                    <input type="text" name="especialidade" class="form-control"
+                           value="{{ item.especialidade if item else '' }}"
+                           placeholder="Ex.: Cardiologia, Clínica Geral" required>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Observações</label>
+                    <input type="text" name="observacoes" class="form-control"
+                           value="{{ item.observacoes if item else '' }}"
+                           placeholder="Informações adicionais">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a href="{{ url_for('consultas_listar') }}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-2"></i>Cancelar
+        </a>
+        <button type="submit" class="btn btn-primary px-4">
+            <i class="bi bi-check-lg me-2"></i>Salvar
+        </button>
+    </div>
+</form>
+
+{% endblock %}
