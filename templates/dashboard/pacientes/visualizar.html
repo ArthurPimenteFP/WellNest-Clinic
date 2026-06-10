@@ -1,0 +1,42 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Visualizar Paciente — WellNest Clinic{% endblock %}
+{% block page_title %}Visualizar Paciente{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('pacientes_listar') }}">Pacientes</a></li>
+            <li class="breadcrumb-item active">Visualizar</li>
+        </ol>
+    </nav>
+    <a href="{{ url_for('pacientes_alterar', id=item.id_paciente) }}" class="btn btn-warning">
+        <i class="bi bi-pencil me-2"></i>Editar
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold py-3">
+        <i class="bi bi-person-lines-fill me-2 text-primary"></i>Dados do Paciente
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-md-6"><p class="text-muted mb-1 small">Nome Completo</p><p class="fw-semibold mb-0">{{ item.nome }}</p></div>
+            <div class="col-md-6"><p class="text-muted mb-1 small">CPF</p><p class="fw-semibold mb-0">{{ item.cpf }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Telefone</p><p class="fw-semibold mb-0">{{ item.telefone }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">E-mail</p><p class="fw-semibold mb-0">{{ item.email or '—' }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Convênio</p><p class="fw-semibold mb-0">{{ item.convenio or '—' }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Tipo Sanguíneo</p><p class="fw-semibold mb-0">{{ item.tipo_sanguineo or '—' }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Cadastrado em</p><p class="fw-semibold mb-0">{{ item.criado_em.strftime('%d/%m/%Y') if item.criado_em else '—' }}</p></div>
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('pacientes_listar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-2"></i>Voltar
+</a>
+
+{% endblock %}
