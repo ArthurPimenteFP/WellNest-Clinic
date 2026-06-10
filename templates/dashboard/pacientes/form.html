@@ -1,0 +1,133 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}{{ titulo }} — WellNest Clinic{% endblock %}
+{% block page_title %}{{ titulo }}{% endblock %}
+
+{% block content %}
+
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('pacientes_listar') }}">Pacientes</a></li>
+            <li class="breadcrumb-item active">{{ titulo }}</li>
+        </ol>
+    </nav>
+</div>
+
+<form action="{{ url_for('pacientes_alterar', id=item.id_paciente) if modo == 'alterar' else url_for('pacientes_cadastrar') }}" method="POST">
+    <div class="row g-4">
+
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-primary text-white fw-semibold">
+                    <i class="bi bi-person-lines-fill me-2"></i>Dados do Paciente
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label fw-semibold">Nome Completo <span class="text-danger">*</span></label>
+                            <input type="text" name="nome" class="form-control"
+                                   value="{{ item.nome if item else '' }}"
+                                   placeholder="Nome completo do paciente" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">CPF <span class="text-danger">*</span></label>
+                            <input type="text" name="cpf" class="form-control"
+                                   value="{{ item.cpf if item else '' }}"
+                                   placeholder="000.000.000-00" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Data de Nascimento</label>
+                            <input type="date" name="data_nascimento" class="form-control"
+                                   value="{{ item.data_nascimento if item else '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Telefone <span class="text-danger">*</span></label>
+                            <input type="text" name="telefone" class="form-control"
+                                   value="{{ item.telefone if item else '' }}"
+                                   placeholder="(00) 00000-0000" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">E-mail</label>
+                            <input type="email" name="email" class="form-control"
+                                   value="{{ item.email if item else '' }}"
+                                   placeholder="paciente@email.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Convênio</label>
+                            <input type="text" name="convenio" class="form-control"
+                                   value="{{ item.convenio if item else '' }}"
+                                   placeholder="Ex.: Unimed, Amil, Particular">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Tipo Sanguíneo</label>
+                            <select name="tipo_sanguineo" class="form-select">
+                                <option value="">Não informado</option>
+                                {% for ts in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}
+                                <option value="{{ ts }}" {{ 'selected' if item and item.tipo_sanguineo == ts else '' }}>{{ ts }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-secondary text-white fw-semibold">
+                    <i class="bi bi-geo-alt-fill me-2"></i>Endereço
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">CEP</label>
+                            <input type="text" name="cep" class="form-control" value="{{ item.cep if item else '' }}" placeholder="00000-000">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label fw-semibold">Logradouro</label>
+                            <input type="text" name="logradouro" class="form-control" value="{{ item.logradouro if item else '' }}" placeholder="Rua, Avenida…">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Número</label>
+                            <input type="text" name="numero" class="form-control" value="{{ item.numero if item else '' }}" placeholder="Nº">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-semibold">Complemento</label>
+                            <input type="text" name="complemento" class="form-control" value="{{ item.complemento if item else '' }}" placeholder="Apto, Bloco…">
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label fw-semibold">Bairro</label>
+                            <input type="text" name="bairro" class="form-control" value="{{ item.bairro if item else '' }}" placeholder="Bairro">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-semibold">Cidade</label>
+                            <input type="text" name="cidade" class="form-control" value="{{ item.cidade if item else '' }}" placeholder="Cidade">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label fw-semibold">Estado</label>
+                            <select name="estado" class="form-select">
+                                <option value="">UF</option>
+                                {% for uf in ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'] %}
+                                <option value="{{ uf }}" {{ 'selected' if item and item.estado == uf else '' }}>{{ uf }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 d-flex justify-content-between">
+            <a href="{{ url_for('pacientes_listar') }}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Cancelar
+            </a>
+            <button type="submit" class="btn btn-primary px-4">
+                <i class="bi bi-check-lg me-2"></i>Salvar
+            </button>
+        </div>
+    </div>
+</form>
+
+{% endblock %}
