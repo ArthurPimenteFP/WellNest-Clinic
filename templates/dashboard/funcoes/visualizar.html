@@ -1,0 +1,81 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Visualizar Função — WellNest Clinic{% endblock %}
+{% block page_title %}Visualizar Função{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('funcoes_listar') }}">Funções</a></li>
+            <li class="breadcrumb-item active">Visualizar</li>
+        </ol>
+    </nav>
+    <a href="{{ url_for('funcoes_alterar', id=item.id_funcao) }}" class="btn btn-warning">
+        <i class="bi bi-pencil me-2"></i>Editar
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold py-3">
+        <i class="bi bi-shield-fill me-2 text-primary"></i>Dados da Função
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <p class="text-muted mb-1 small">Nome da Função</p>
+                <p class="fw-semibold mb-0">{{ item.nome }}</p>
+            </div>
+            <div class="col-md-6">
+                <p class="text-muted mb-1 small">Status</p>
+                {% if item.status == 'Ativo' or item.status == 1 %}
+                <span class="badge bg-success">Ativo</span>
+                {% else %}
+                <span class="badge bg-secondary">Inativo</span>
+                {% endif %}
+            </div>
+            <div class="col-12">
+                <p class="text-muted mb-1 small">Descrição</p>
+                <p class="mb-0">{{ item.descricao or '—' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold py-3">
+        <i class="bi bi-toggles me-2 text-primary"></i>Permissões
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-2">
+            <div class="col-md-3">
+                <span class="badge {{ 'bg-success' if item.gerenciar_usuario else 'bg-secondary' }} me-1">
+                    <i class="bi {{ 'bi-check' if item.gerenciar_usuario else 'bi-x' }} me-1"></i>Gerenciar Usuários
+                </span>
+            </div>
+            <div class="col-md-3">
+                <span class="badge {{ 'bg-success' if item.gerenciar_funcao else 'bg-secondary' }} me-1">
+                    <i class="bi {{ 'bi-check' if item.gerenciar_funcao else 'bi-x' }} me-1"></i>Gerenciar Funções
+                </span>
+            </div>
+            <div class="col-md-3">
+                <span class="badge {{ 'bg-success' if item.gerenciar_paciente else 'bg-secondary' }} me-1">
+                    <i class="bi {{ 'bi-check' if item.gerenciar_paciente else 'bi-x' }} me-1"></i>Gerenciar Pacientes
+                </span>
+            </div>
+            <div class="col-md-3">
+                <span class="badge {{ 'bg-success' if item.gerenciar_consulta else 'bg-secondary' }} me-1">
+                    <i class="bi {{ 'bi-check' if item.gerenciar_consulta else 'bi-x' }} me-1"></i>Gerenciar Consultas
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('funcoes_listar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-2"></i>Voltar
+</a>
+
+{% endblock %}
