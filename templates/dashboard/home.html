@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}Dashboard — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}Dashboard{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <!-- Cards de estatísticas -->
@@ -69,7 +100,8 @@
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <!-- TABELA: normalmente usada para READ/LISTAGEM do CRUD -->
+<table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
                         <th>Paciente</th>
@@ -80,15 +112,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% if consultas_recentes %}
-                        {% for c in consultas_recentes %}
+                    <!-- CONDIÇÃO LÓGICA -->
+{% if consultas_recentes %}
+                        <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for c in consultas_recentes %}
                         <tr>
                             <td class="fw-semibold">{{ c.paciente }}</td>
                             <td>{{ c.medico }}</td>
                             <td>{{ c.especialidade }}</td>
                             <td>{{ c.data.strftime('%d/%m/%Y') if c.data else '' }} {{ c.hora.strftime('%H:%M') if c.hora else '' }}</td>
                             <td>
-                                {% if c.status == 'Realizada' %}
+                                <!-- CONDIÇÃO LÓGICA -->
+{% if c.status == 'Realizada' %}
                                 <span class="badge bg-success">{{ c.status }}</span>
                                 {% elif c.status == 'Agendada' %}
                                 <span class="badge bg-primary">{{ c.status }}</span>
@@ -97,9 +132,11 @@
                                 {% else %}
                                 <span class="badge bg-danger">{{ c.status }}</span>
                                 {% endif %}
+<!-- FIM DA CONDIÇÃO -->
                             </td>
                         </tr>
                         {% endfor %}
+<!-- FIM DO LOOP -->
                     {% else %}
                         <tr>
                             <td colspan="5" class="text-center text-muted py-4">
@@ -107,6 +144,7 @@
                             </td>
                         </tr>
                     {% endif %}
+<!-- FIM DA CONDIÇÃO -->
                 </tbody>
             </table>
         </div>
@@ -114,3 +152,4 @@
 </div>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->

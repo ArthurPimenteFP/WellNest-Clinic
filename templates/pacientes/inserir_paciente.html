@@ -1,7 +1,36 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends 'base.html' %} <!-- Herda o layout base -->
 
-{% block titulo %}Novo Paciente — WellNest Clinic{% endblock %} <!-- Título da página -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block titulo %}Novo Paciente — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO --> <!-- Título da página -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block conteudo %} <!-- Início do conteúdo -->
 <div class="fade-in"> <!-- Container com animação -->
 
@@ -17,7 +46,8 @@
         <div class="card-body p-4 p-md-5">
 
             <!-- Formulário para cadastro de paciente -->
-            <form method="POST" action="{{ url_for('inserir_paciente') }}">
+            <!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
+<form method="POST" action="{{ url_for('inserir_paciente') }}">
 
                 <!-- Linha: nome e CPF -->
                 <div class="row">
@@ -25,14 +55,16 @@
                     <!-- Campo nome completo -->
                     <div class="col-md-6 mb-3">
                         <label for="nome" class="form-label">Nome Completo</label>
-                        <input type="text" class="form-control" id="nome" name="nome"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" class="form-control" id="nome" name="nome"
                                placeholder="Nome completo do paciente" required>
                     </div>
 
                     <!-- Campo CPF -->
                     <div class="col-md-6 mb-3">
                         <label for="cpf" class="form-label">CPF</label>
-                        <input type="text" class="form-control" id="cpf" name="cpf"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" class="form-control" id="cpf" name="cpf"
                                placeholder="000.000.000-00" required>
                     </div>
                 </div>
@@ -43,14 +75,16 @@
                     <!-- Campo telefone -->
                     <div class="col-md-6 mb-3">
                         <label for="telefone" class="form-label">Telefone</label>
-                        <input type="tel" class="form-control" id="telefone" name="telefone"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="tel" class="form-control" id="telefone" name="telefone"
                                placeholder="(11) 99999-9999" required>
                     </div>
 
                     <!-- Campo email -->
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="email" class="form-control" id="email" name="email"
                                placeholder="paciente@email.com" required>
                     </div>
                 </div>
@@ -76,7 +110,8 @@
                 <div class="d-flex gap-2 mt-3">
 
                     <!-- Botão salvar -->
-                    <button type="submit" class="btn btn-primary-custom">
+                    <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary-custom">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
 
@@ -90,4 +125,5 @@
         </div>
     </div>
 </div>
-{% endblock %} <!-- Fim do conteúdo -->
+{% endblock %}
+<!-- FIM DE BLOCO --> <!-- Fim do conteúdo -->

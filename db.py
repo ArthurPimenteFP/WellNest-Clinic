@@ -1,3 +1,18 @@
+"""
+DB.PY - CAMADA DE ACESSO AO BANCO DE DADOS
+
+Responsabilidades:
+- Criar e gerenciar o pool de conexões MySQL.
+- Executar consultas SQL de forma centralizada.
+- Controlar commit e rollback.
+- Inicializar o banco usando o schema.sql.
+- Fornecer funções reutilizáveis para todo o sistema.
+
+OBSERVAÇÃO:
+O arquivo já possuía comentários detalhados. Este cabeçalho foi adicionado
+para documentação geral do módulo.
+"""
+
 # db.py — Módulo central de acesso ao banco de dados
 # Qualquer arquivo que precise do banco importa apenas este módulo
 

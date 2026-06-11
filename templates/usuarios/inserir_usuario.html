@@ -1,6 +1,35 @@
-{% extends 'base.html' %}
-{% block titulo %}Novo Usuário — WellNest Clinic{% endblock %}
 
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
+{% extends 'base.html' %}
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block titulo %}Novo Usuário — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block conteudo %}
 <div class="fade-in">
     <div class="page-heading">
@@ -9,16 +38,19 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4 p-md-5">
-            <form method="POST" action="{{ url_for('inserir_usuario') }}">
+            <!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
+<form method="POST" action="{{ url_for('inserir_usuario') }}">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="nome" class="form-label">Nome Completo</label>
-                        <input type="text" class="form-control" id="nome" name="nome"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" class="form-control" id="nome" name="nome"
                                placeholder="Digite o nome completo" required>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="email" class="form-label">E-mail</label>
-                        <input type="email" class="form-control" id="email" name="email"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="email" class="form-control" id="email" name="email"
                                placeholder="usuario@wellnest.com" required>
                     </div>
                 </div>
@@ -27,19 +59,23 @@
                         <label for="perfil" class="form-label">Função / Perfil</label>
                         <select class="form-select" id="perfil" name="perfil" required>
                             <option value="" selected disabled>Selecione a função</option>
-                            {% for funcao in funcoes %}
+                            <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for funcao in funcoes %}
                             <option value="{{ funcao.id_funcao }}">{{ funcao.nome }}</option>
                             {% endfor %}
+<!-- FIM DO LOOP -->
                         </select>
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="senha" class="form-label">Senha</label>
-                        <input type="password" class="form-control" id="senha" name="senha"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="password" class="form-control" id="senha" name="senha"
                                placeholder="Crie uma senha" required>
                     </div>
                 </div>
                 <div class="d-flex gap-2 mt-3">
-                    <button type="submit" class="btn btn-primary-custom">
+                    <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary-custom">
                         <i class="bi bi-check-circle me-1"></i>Salvar
                     </button>
                     <a href="{{ url_for('listar_usuarios') }}" class="btn btn-secondary">
@@ -51,3 +87,4 @@
     </div>
 </div>
 {% endblock %}
+<!-- FIM DE BLOCO -->

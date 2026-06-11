@@ -1,3 +1,20 @@
+"""
+APP.PY - ARQUIVO PRINCIPAL DO SISTEMA
+
+Este arquivo:
+- Inicializa o Flask.
+- Controla autenticação (login/logout).
+- Gerencia sessões.
+- Define todas as rotas do sistema.
+- Executa operações CRUD de Usuários, Funções, Pacientes e Consultas.
+- Renderiza templates HTML.
+- Utiliza funções do db.py para acesso ao banco de dados.
+
+OBSERVAÇÃO:
+Os comentários originais foram preservados e complementados por este bloco
+explicativo para facilitar a apresentação e entendimento do projeto.
+"""
+
 from functools import wraps
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from db import execute_one, execute_query, iniciar_bd

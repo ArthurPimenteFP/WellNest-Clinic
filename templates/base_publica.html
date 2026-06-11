@@ -1,9 +1,36 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titulo %}WellNest Clinic{% endblock %}</title>
+    <title><!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block titulo %}WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO --></title>
     <meta name="description" content="WellNest Clinic — Sistema de gestão para clínica médica">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -11,7 +38,9 @@
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light-custom">
 
-    {% block corpo %}{% endblock %}
+    <!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block corpo %}{% endblock %}
+<!-- FIM DE BLOCO -->
 
     <footer class="footer-pub mt-auto py-3">
         <div class="container text-center">

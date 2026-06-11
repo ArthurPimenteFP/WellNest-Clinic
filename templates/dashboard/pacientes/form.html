@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}{{ titulo }} — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}{{ titulo }}{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <div class="mb-4">
@@ -15,6 +46,7 @@
     </nav>
 </div>
 
+<!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
 <form action="{{ url_for('pacientes_alterar', id=item.id_paciente) if modo == 'alterar' else url_for('pacientes_cadastrar') }}" method="POST">
     <div class="row g-4">
 
@@ -27,36 +59,42 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label fw-semibold">Nome Completo <span class="text-danger">*</span></label>
-                            <input type="text" name="nome" class="form-control"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="nome" class="form-control"
                                    value="{{ item.nome if item else '' }}"
                                    placeholder="Nome completo do paciente" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">CPF <span class="text-danger">*</span></label>
-                            <input type="text" name="cpf" class="form-control"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="cpf" class="form-control"
                                    value="{{ item.cpf if item else '' }}"
                                    placeholder="000.000.000-00" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Data de Nascimento</label>
-                            <input type="date" name="data_nascimento" class="form-control"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="date" name="data_nascimento" class="form-control"
                                    value="{{ item.data_nascimento if item else '' }}">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Telefone <span class="text-danger">*</span></label>
-                            <input type="text" name="telefone" class="form-control"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="telefone" class="form-control"
                                    value="{{ item.telefone if item else '' }}"
                                    placeholder="(00) 00000-0000" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">E-mail</label>
-                            <input type="email" name="email" class="form-control"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="email" name="email" class="form-control"
                                    value="{{ item.email if item else '' }}"
                                    placeholder="paciente@email.com">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Convênio</label>
-                            <input type="text" name="convenio" class="form-control"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="convenio" class="form-control"
                                    value="{{ item.convenio if item else '' }}"
                                    placeholder="Ex.: Unimed, Amil, Particular">
                         </div>
@@ -64,9 +102,11 @@
                             <label class="form-label fw-semibold">Tipo Sanguíneo</label>
                             <select name="tipo_sanguineo" class="form-select">
                                 <option value="">Não informado</option>
-                                {% for ts in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}
+                                <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for ts in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}
                                 <option value="{{ ts }}" {{ 'selected' if item and item.tipo_sanguineo == ts else '' }}>{{ ts }}</option>
                                 {% endfor %}
+<!-- FIM DO LOOP -->
                             </select>
                         </div>
                     </div>
@@ -83,35 +123,43 @@
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">CEP</label>
-                            <input type="text" name="cep" class="form-control" value="{{ item.cep if item else '' }}" placeholder="00000-000">
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="cep" class="form-control" value="{{ item.cep if item else '' }}" placeholder="00000-000">
                         </div>
                         <div class="col-md-8">
                             <label class="form-label fw-semibold">Logradouro</label>
-                            <input type="text" name="logradouro" class="form-control" value="{{ item.logradouro if item else '' }}" placeholder="Rua, Avenida…">
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="logradouro" class="form-control" value="{{ item.logradouro if item else '' }}" placeholder="Rua, Avenida…">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label fw-semibold">Número</label>
-                            <input type="text" name="numero" class="form-control" value="{{ item.numero if item else '' }}" placeholder="Nº">
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="numero" class="form-control" value="{{ item.numero if item else '' }}" placeholder="Nº">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label fw-semibold">Complemento</label>
-                            <input type="text" name="complemento" class="form-control" value="{{ item.complemento if item else '' }}" placeholder="Apto, Bloco…">
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="complemento" class="form-control" value="{{ item.complemento if item else '' }}" placeholder="Apto, Bloco…">
                         </div>
                         <div class="col-md-5">
                             <label class="form-label fw-semibold">Bairro</label>
-                            <input type="text" name="bairro" class="form-control" value="{{ item.bairro if item else '' }}" placeholder="Bairro">
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="bairro" class="form-control" value="{{ item.bairro if item else '' }}" placeholder="Bairro">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-semibold">Cidade</label>
-                            <input type="text" name="cidade" class="form-control" value="{{ item.cidade if item else '' }}" placeholder="Cidade">
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="cidade" class="form-control" value="{{ item.cidade if item else '' }}" placeholder="Cidade">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label fw-semibold">Estado</label>
                             <select name="estado" class="form-select">
                                 <option value="">UF</option>
-                                {% for uf in ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'] %}
+                                <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for uf in ['AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA','PB','PR','PE','PI','RJ','RN','RS','RO','RR','SC','SP','SE','TO'] %}
                                 <option value="{{ uf }}" {{ 'selected' if item and item.estado == uf else '' }}>{{ uf }}</option>
                                 {% endfor %}
+<!-- FIM DO LOOP -->
                             </select>
                         </div>
                     </div>
@@ -123,7 +171,8 @@
             <a href="{{ url_for('pacientes_listar') }}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left me-2"></i>Cancelar
             </a>
-            <button type="submit" class="btn btn-primary px-4">
+            <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary px-4">
                 <i class="bi bi-check-lg me-2"></i>Salvar
             </button>
         </div>
@@ -131,3 +180,4 @@
 </form>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->

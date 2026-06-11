@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}Consultas — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}Consultas{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -20,7 +51,8 @@
 <div class="card border-0 shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
+            <!-- TABELA: normalmente usada para READ/LISTAGEM do CRUD -->
+<table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
                         <th>#</th>
@@ -33,7 +65,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for item in dados %}
+                    <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for item in dados %}
                     <tr>
                         <td>{{ item.id_consulta }}</td>
                         <td class="fw-semibold">{{ item.paciente }}</td>
@@ -44,10 +77,12 @@
                             <small class="text-muted">{{ item.hora.strftime('%H:%M') if item.hora else '' }}</small>
                         </td>
                         <td>
-                            {% if item.status == 'Realizada' %}<span class="badge bg-success">{{ item.status }}</span>
+                            <!-- CONDIÇÃO LÓGICA -->
+{% if item.status == 'Realizada' %}<span class="badge bg-success">{{ item.status }}</span>
                             {% elif item.status == 'Agendada' %}<span class="badge bg-primary">{{ item.status }}</span>
                             {% elif item.status == 'Confirmada' %}<span class="badge bg-info text-dark">{{ item.status }}</span>
                             {% else %}<span class="badge bg-danger">{{ item.status }}</span>{% endif %}
+<!-- FIM DA CONDIÇÃO -->
                         </td>
                         <td class="text-center">
                             <a href="{{ url_for('consultas_visualizar', id=item.id_consulta) }}"
@@ -58,7 +93,8 @@
                                class="btn btn-sm btn-outline-warning" title="Editar">
                                 <i class="bi bi-pencil"></i>
                             </a>
-                            <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                            <!-- BOTÃO DE AÇÃO -->
+<button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
                                     data-bs-toggle="modal" data-bs-target="#modalExcluir"
                                     data-id="{{ item.id_consulta }}" data-nome="{{ item.paciente }}">
                                 <i class="bi bi-trash"></i>
@@ -72,6 +108,7 @@
                         </td>
                     </tr>
                     {% endfor %}
+<!-- FIM DO LOOP -->
                 </tbody>
             </table>
         </div>
@@ -83,15 +120,19 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Confirmar Exclusão</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <!-- BOTÃO DE AÇÃO -->
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 Tem certeza que deseja excluir a consulta de <strong id="excluirNome"></strong>?<br>Esta ação não poderá ser desfeita.
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <form id="formExcluir" method="POST">
-                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Excluir</button>
+                <!-- BOTÃO DE AÇÃO -->
+<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
+<form id="formExcluir" method="POST">
+                    <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Excluir</button>
                 </form>
             </div>
         </div>
@@ -99,7 +140,9 @@
 </div>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block scripts %}
 <script>
     const modal = document.getElementById('modalExcluir');
@@ -110,3 +153,4 @@
     });
 </script>
 {% endblock %}
+<!-- FIM DE BLOCO -->

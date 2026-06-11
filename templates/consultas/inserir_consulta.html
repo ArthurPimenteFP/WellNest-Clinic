@@ -1,7 +1,36 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends 'base.html' %} <!-- Herda o layout base -->
 
-{% block titulo %}Nova Consulta — WellNest Clinic{% endblock %} <!-- Título da página -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block titulo %}Nova Consulta — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO --> <!-- Título da página -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block conteudo %} <!-- Início do conteúdo da página -->
 <div class="fade-in"> <!-- Container com animação -->
 
@@ -17,7 +46,8 @@
         <div class="card-body p-4 p-md-5">
 
             <!-- Formulário para nova consulta -->
-            <form method="POST" action="{{ url_for('inserir_consulta') }}">
+            <!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
+<form method="POST" action="{{ url_for('inserir_consulta') }}">
 
                 <!-- Linha: paciente e médico -->
                 <div class="row">
@@ -53,13 +83,15 @@
                     <!-- Campo de data -->
                     <div class="col-md-4 mb-3">
                         <label for="data" class="form-label">Data</label>
-                        <input type="date" class="form-control" id="data" name="data" required>
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="date" class="form-control" id="data" name="data" required>
                     </div>
 
                     <!-- Campo de horário -->
                     <div class="col-md-4 mb-3">
                         <label for="hora" class="form-label">Horário</label>
-                        <input type="time" class="form-control" id="hora" name="hora" required>
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="time" class="form-control" id="hora" name="hora" required>
                     </div>
 
                     <!-- Seleção de especialidade -->
@@ -92,7 +124,8 @@
                 <div class="d-flex gap-2 mt-3">
 
                     <!-- Botão de agendar -->
-                    <button type="submit" class="btn btn-primary-custom">
+                    <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary-custom">
                         <i class="bi bi-check-circle me-1"></i>Agendar
                     </button>
 
@@ -106,5 +139,6 @@
         </div>
     </div>
 </div>
-{% endblock %} <!-- Fim do conteúdo -->
+{% endblock %}
+<!-- FIM DE BLOCO --> <!-- Fim do conteúdo -->
 

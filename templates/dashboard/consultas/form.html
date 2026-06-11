@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}{{ titulo }} — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}{{ titulo }}{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <div class="mb-4">
@@ -15,6 +46,7 @@
     </nav>
 </div>
 
+<!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
 <form action="{{ url_for('consultas_alterar', id=item.id_consulta) if modo == 'alterar' else url_for('consultas_cadastrar') }}" method="POST">
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-header bg-primary text-white fw-semibold">
@@ -26,47 +58,57 @@
                     <label class="form-label fw-semibold">Paciente <span class="text-danger">*</span></label>
                     <select name="paciente_id" class="form-select" required>
                         <option value="">Selecione o paciente</option>
-                        {% for p in lista_pacientes %}
+                        <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for p in lista_pacientes %}
                         <option value="{{ p.id_paciente }}" {{ 'selected' if item and item.paciente_id == p.id_paciente else '' }}>{{ p.nome }}</option>
                         {% endfor %}
+<!-- FIM DO LOOP -->
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Médico Responsável <span class="text-danger">*</span></label>
                     <select name="medico_id" class="form-select" required>
                         <option value="">Selecione o médico</option>
-                        {% for m in lista_medicos %}
+                        <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for m in lista_medicos %}
                         <option value="{{ m.id_usuario }}" {{ 'selected' if item and item.medico_id == m.id_usuario else '' }}>{{ m.nome }}</option>
                         {% endfor %}
+<!-- FIM DO LOOP -->
                     </select>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Data <span class="text-danger">*</span></label>
-                    <input type="date" name="data" class="form-control"
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="date" name="data" class="form-control"
                            value="{{ item.data if item else '' }}" required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Hora <span class="text-danger">*</span></label>
-                    <input type="time" name="hora" class="form-control"
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="time" name="hora" class="form-control"
                            value="{{ item.hora if item else '' }}" required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">Status</label>
                     <select name="status" class="form-select">
-                        {% for s in ['Agendada','Confirmada','Realizada','Cancelada'] %}
+                        <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for s in ['Agendada','Confirmada','Realizada','Cancelada'] %}
                         <option value="{{ s }}" {{ 'selected' if item and item.status == s else ('selected' if s == 'Agendada' and not item else '') }}>{{ s }}</option>
                         {% endfor %}
+<!-- FIM DO LOOP -->
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Especialidade <span class="text-danger">*</span></label>
-                    <input type="text" name="especialidade" class="form-control"
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="especialidade" class="form-control"
                            value="{{ item.especialidade if item else '' }}"
                            placeholder="Ex.: Cardiologia, Clínica Geral" required>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Observações</label>
-                    <input type="text" name="observacoes" class="form-control"
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" name="observacoes" class="form-control"
                            value="{{ item.observacoes if item else '' }}"
                            placeholder="Informações adicionais">
                 </div>
@@ -78,10 +120,12 @@
         <a href="{{ url_for('consultas_listar') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-2"></i>Cancelar
         </a>
-        <button type="submit" class="btn btn-primary px-4">
+        <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary px-4">
             <i class="bi bi-check-lg me-2"></i>Salvar
         </button>
     </div>
 </form>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->

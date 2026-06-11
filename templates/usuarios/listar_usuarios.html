@@ -1,7 +1,36 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends 'base.html' %} <!-- Herda o layout base do sistema -->
 
-{% block titulo %}Usuários — WellNest Clinic{% endblock %} <!-- Define o título da página -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block titulo %}Usuários — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO --> <!-- Define o título da página -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block conteudo %} <!-- Início do conteúdo principal -->
 <div class="fade-in"> <!-- Container com efeito de fade-in -->
 
@@ -29,7 +58,8 @@
 
     <!-- Tabela responsiva de usuários -->
     <div class="table-responsive">
-        <table class="table table-hover table-bordered align-middle mb-0">
+        <!-- TABELA: normalmente usada para READ/LISTAGEM do CRUD -->
+<table class="table table-hover table-bordered align-middle mb-0">
 
             <!-- Cabeçalho da tabela -->
             <thead class="table-header-custom">
@@ -46,7 +76,8 @@
             <tbody>
 
                 <!-- Loop pelos usuários -->
-                {% for u in usuarios %}
+                <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for u in usuarios %}
                 <tr>
 
                     <!-- ID do usuário -->
@@ -67,21 +98,25 @@
                     <td class="text-center">
 
                         <!-- Botão editar -->
-                        <button class="btn btn-sm btn-warning me-1" title="Editar">
+                        <!-- BOTÃO DE AÇÃO -->
+<button class="btn btn-sm btn-warning me-1" title="Editar">
                             <i class="bi bi-pencil-fill"></i> Editar
                         </button>
 
                         <!-- Botão excluir -->
-                        <button class="btn btn-sm btn-danger btn-excluir" title="Excluir">
+                        <!-- BOTÃO DE AÇÃO -->
+<button class="btn btn-sm btn-danger btn-excluir" title="Excluir">
                             <i class="bi bi-trash-fill"></i> Excluir
                         </button>
 
                     </td>
                 </tr>
-                {% endfor %} <!-- Fim do loop de usuários -->
+                {% endfor %}
+<!-- FIM DO LOOP --> <!-- Fim do loop de usuários -->
 
             </tbody>
         </table>
     </div>
 </div>
-{% endblock %} <!-- Fim do conteúdo principal -->
+{% endblock %}
+<!-- FIM DE BLOCO --> <!-- Fim do conteúdo principal -->

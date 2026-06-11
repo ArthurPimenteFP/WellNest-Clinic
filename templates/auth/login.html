@@ -1,6 +1,35 @@
-{% extends 'base_publica.html' %}
-{% block titulo %}Login — WellNest Clinic{% endblock %}
 
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
+{% extends 'base_publica.html' %}
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
+{% block titulo %}Login — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block corpo %}
 <div class="auth-bg d-flex align-items-center justify-content-center">
     <div class="container">
@@ -13,27 +42,36 @@
                         <p class="text-muted mb-0" style="font-size:.9rem">Acesse o sistema</p>
                     </div>
                     {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
+                        <!-- CONDIÇÃO LÓGICA -->
+{% if messages %}
+                            <!-- LOOP: percorre registros vindos do banco de dados -->
+{% for category, message in messages %}
                                 <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
                                     {{ message }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                    <!-- BOTÃO DE AÇÃO -->
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                                 </div>
                             {% endfor %}
+<!-- FIM DO LOOP -->
                         {% endif %}
+<!-- FIM DA CONDIÇÃO -->
                     {% endwith %}
-                    <form method="POST" action="{{ url_for('login') }}">
+                    <!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
+<form method="POST" action="{{ url_for('login') }}">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" name="email"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="email" class="form-control" id="email" name="email"
                                    placeholder="seu@email.com" required>
                         </div>
                         <div class="mb-4">
                             <label for="senha" class="form-label">Senha</label>
-                            <input type="password" class="form-control" id="senha" name="senha"
+                            <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="password" class="form-control" id="senha" name="senha"
                                    placeholder="Digite sua senha" required>
                         </div>
-                        <button type="submit" class="btn btn-primary-custom w-100 py-2 fw-semibold">
+                        <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary-custom w-100 py-2 fw-semibold">
                             <i class="bi bi-box-arrow-in-right me-1"></i>Entrar
                         </button>
                     </form>
@@ -47,3 +85,4 @@
     </div>
 </div>
 {% endblock %}
+<!-- FIM DE BLOCO -->

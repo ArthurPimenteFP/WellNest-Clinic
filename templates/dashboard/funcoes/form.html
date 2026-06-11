@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}{{ titulo }} — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}{{ titulo }}{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <div class="mb-4">
@@ -15,6 +46,7 @@
     </nav>
 </div>
 
+<!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
 <form action="{{ url_for('funcoes_alterar', id=item.id_funcao) if modo == 'alterar' else url_for('funcoes_cadastrar') }}" method="POST">
     <div class="card border-0 shadow-sm mb-4">
         <div class="card-header bg-white fw-semibold py-3">
@@ -24,7 +56,8 @@
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Nome da Função <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control" name="nome"
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="text" class="form-control" name="nome"
                            value="{{ item.nome if item else '' }}"
                            placeholder="Ex.: Médico, Recepcionista" required>
                 </div>
@@ -52,28 +85,32 @@
             <div class="row g-3">
                 <div class="col-md-3">
                     <div class="form-check">
-                        <input name="gerenciar_usuario" class="form-check-input" type="checkbox" id="perm_usuarios"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input name="gerenciar_usuario" class="form-check-input" type="checkbox" id="perm_usuarios"
                                {{ 'checked' if item and item.gerenciar_usuario else '' }}>
                         <label class="form-check-label" for="perm_usuarios">Gerenciar Usuários</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-check">
-                        <input name="gerenciar_funcao" class="form-check-input" type="checkbox" id="perm_funcoes"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input name="gerenciar_funcao" class="form-check-input" type="checkbox" id="perm_funcoes"
                                {{ 'checked' if item and item.gerenciar_funcao else '' }}>
                         <label class="form-check-label" for="perm_funcoes">Gerenciar Funções</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-check">
-                        <input name="gerenciar_paciente" class="form-check-input" type="checkbox" id="perm_pacientes"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input name="gerenciar_paciente" class="form-check-input" type="checkbox" id="perm_pacientes"
                                {{ 'checked' if item and item.gerenciar_paciente else '' }}>
                         <label class="form-check-label" for="perm_pacientes">Gerenciar Pacientes</label>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-check">
-                        <input name="gerenciar_consulta" class="form-check-input" type="checkbox" id="perm_consultas"
+                        <!-- CAMPO DE ENTRADA DE DADOS -->
+<input name="gerenciar_consulta" class="form-check-input" type="checkbox" id="perm_consultas"
                                {{ 'checked' if item and item.gerenciar_consulta else '' }}>
                         <label class="form-check-label" for="perm_consultas">Gerenciar Consultas</label>
                     </div>
@@ -86,10 +123,12 @@
         <a href="{{ url_for('funcoes_listar') }}" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left me-2"></i>Cancelar
         </a>
-        <button type="submit" class="btn btn-primary px-4">
+        <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary px-4">
             <i class="bi bi-check-lg me-2"></i>Salvar
         </button>
     </div>
 </form>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->

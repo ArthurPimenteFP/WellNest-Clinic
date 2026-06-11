@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}Visualizar Função — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}Visualizar Função{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -30,11 +61,13 @@
             </div>
             <div class="col-md-6">
                 <p class="text-muted mb-1 small">Status</p>
-                {% if item.status == 'Ativo' or item.status == 1 %}
+                <!-- CONDIÇÃO LÓGICA -->
+{% if item.status == 'Ativo' or item.status == 1 %}
                 <span class="badge bg-success">Ativo</span>
                 {% else %}
                 <span class="badge bg-secondary">Inativo</span>
                 {% endif %}
+<!-- FIM DA CONDIÇÃO -->
             </div>
             <div class="col-12">
                 <p class="text-muted mb-1 small">Descrição</p>
@@ -79,3 +112,4 @@
 </a>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->

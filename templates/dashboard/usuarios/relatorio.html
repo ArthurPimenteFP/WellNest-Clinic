@@ -1,8 +1,39 @@
+
+<!--
+===============================================================================
+DOCUMENTAÇÃO COMPLETA DO TEMPLATE
+
+FINALIDADE:
+Este arquivo pertence à camada de apresentação (View) da aplicação Flask/Jinja2.
+
+CONCEITOS IMPORTANTES:
+- CRUD = Create (Criar), Read (Consultar/Listar), Update (Atualizar), Delete (Excluir).
+- Formulários normalmente representam operações CREATE ou UPDATE.
+- Tabelas normalmente representam operações READ.
+- Botões Editar representam UPDATE.
+- Botões Excluir/Remover representam DELETE.
+- Variáveis Jinja recebem dados enviados pelo backend Flask.
+- Estruturas Jinja IF executam lógica condicional.
+- Estruturas Jinja FOR percorrem listas e registros do banco de dados.
+- EXTENDS herda layout de outro template.
+- BLOCK define regiões personalizáveis da página.
+
+FLUXO:
+Usuário -> Rota Flask -> Banco de Dados -> Template -> Navegador
+===============================================================================
+-->
+
+<!-- HERANÇA DE TEMPLATE BASE -->
 {% extends "base_dashboard.html" %}
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block title %}Relatório de Usuários — WellNest Clinic{% endblock %}
+<!-- FIM DE BLOCO -->
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block page_title %}Relatório de Usuários{% endblock %}
+<!-- FIM DE BLOCO -->
 
+<!-- INÍCIO DE BLOCO PERSONALIZÁVEL -->
 {% block content %}
 
 <div class="mb-4">
@@ -20,15 +51,18 @@
         <i class="bi bi-funnel-fill me-2 text-primary"></i>Filtros do Relatório
     </div>
     <div class="card-body p-4">
-        <form action="#" method="get">
+        <!-- FORMULÁRIO: geralmente usado para CREATE ou UPDATE do CRUD -->
+<form action="#" method="get">
             <div class="row g-3">
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Data Início</label>
-                    <input type="date" class="form-control">
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="date" class="form-control">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Data Fim</label>
-                    <input type="date" class="form-control">
+                    <!-- CAMPO DE ENTRADA DE DADOS -->
+<input type="date" class="form-control">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label fw-semibold">Função</label>
@@ -49,10 +83,12 @@
                     </select>
                 </div>
                 <div class="col-12 d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">
+                    <!-- BOTÃO DE AÇÃO -->
+<button type="submit" class="btn btn-primary">
                         <i class="bi bi-search me-2"></i>Gerar Relatório
                     </button>
-                    <button type="reset" class="btn btn-outline-secondary">
+                    <!-- BOTÃO DE AÇÃO -->
+<button type="reset" class="btn btn-outline-secondary">
                         <i class="bi bi-x-lg me-2"></i>Limpar
                     </button>
                 </div>
@@ -64,7 +100,8 @@
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
         <span class="fw-semibold"><i class="bi bi-table me-2 text-primary"></i>Resultados</span>
-        <button class="btn btn-sm btn-outline-secondary" disabled>
+        <!-- BOTÃO DE AÇÃO -->
+<button class="btn btn-sm btn-outline-secondary" disabled>
             <i class="bi bi-download me-1"></i>Exportar
         </button>
     </div>
@@ -77,3 +114,4 @@
 </div>
 
 {% endblock %}
+<!-- FIM DE BLOCO -->
