@@ -1,13 +1,12 @@
--- =====================================================================
+
 -- SCHEMA.SQL
--- =====================================================================
+
 -- Este script:
 -- 1. Cria o banco wellnest_clinic.
 -- 2. Cria as tabelas principais do sistema.
 -- 3. Define chaves primárias e estrangeiras.
 -- 4. Define regras de integridade e relacionamentos.
 -- 5. Estrutura os dados de usuários, funções, pacientes e consultas.
--- =====================================================================
 
 -- DROP DATABASE IF EXISTS wellnest_clinic;
 
