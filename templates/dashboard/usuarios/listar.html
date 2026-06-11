@@ -1,0 +1,114 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Usuários — WellNest Clinic{% endblock %}
+{% block page_title %}Usuários{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item active">Usuários</li>
+        </ol>
+    </nav>
+    <a href="{{ url_for('usuarios_cadastrar') }}" class="btn btn-primary">
+        <i class="bi bi-person-plus me-2"></i>Cadastrar Usuário
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>E-mail / Celular</th>
+                        <th>Função</th>
+                        <th>Status</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in dados %}
+                    <tr>
+                        <td>{{ item.id_usuario }}</td>
+                        <td class="fw-semibold">{{ item.nome }}</td>
+                        <td>{{ item.email }}<br><small class="text-muted">{{ item.celular }}</small></td>
+                        <td>{{ item.funcao }}</td>
+                        <td>
+                            {% if item.status == 'Ativo' %}
+                            <span class="badge bg-success">{{ item.status }}</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ item.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ url_for('usuarios_visualizar', id=item.id_usuario) }}"
+                               class="btn btn-sm btn-outline-info" title="Visualizar">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ url_for('usuarios_alterar', id=item.id_usuario) }}"
+                               class="btn btn-sm btn-outline-warning" title="Editar">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Excluir"
+                                    data-bs-toggle="modal" data-bs-target="#modalExcluir"
+                                    data-id="{{ item.id_usuario }}" data-nome="{{ item.nome }}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="bi bi-people me-2"></i>Nenhum usuário cadastrado.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de exclusão -->
+<div class="modal fade" id="modalExcluir" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                Tem certeza que deseja excluir o usuário <strong id="excluirNome"></strong>?<br>
+                Esta ação não poderá ser desfeita.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form id="formExcluir" method="POST">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const modalExcluir = document.getElementById('modalExcluir');
+    modalExcluir.addEventListener('show.bs.modal', function (event) {
+        const botao = event.relatedTarget;
+        document.getElementById('excluirNome').textContent = botao.getAttribute('data-nome');
+        document.getElementById('formExcluir').action = '/usuarios/excluir/' + botao.getAttribute('data-id');
+    });
+</script>
+{% endblock %}
