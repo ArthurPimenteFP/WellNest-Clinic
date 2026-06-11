@@ -1,0 +1,67 @@
+{% extends "base_dashboard.html" %}
+
+{% block title %}Visualizar Usuário — WellNest Clinic{% endblock %}
+{% block page_title %}Visualizar Usuário{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('usuarios_listar') }}">Usuários</a></li>
+            <li class="breadcrumb-item active">Visualizar</li>
+        </ol>
+    </nav>
+    <a href="{{ url_for('usuarios_alterar', id=item.id_usuario) }}" class="btn btn-warning">
+        <i class="bi bi-pencil me-2"></i>Editar
+    </a>
+</div>
+
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white fw-semibold py-3">
+        <i class="bi bi-person-fill me-2 text-primary"></i>Dados Pessoais
+    </div>
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <p class="text-muted mb-1 small">Nome Completo</p>
+                <p class="fw-semibold mb-0">{{ item.nome }}</p>
+            </div>
+            <div class="col-md-6">
+                <p class="text-muted mb-1 small">CPF</p>
+                <p class="fw-semibold mb-0">{{ item.cpf }}</p>
+            </div>
+            <div class="col-md-6">
+                <p class="text-muted mb-1 small">E-mail</p>
+                <p class="fw-semibold mb-0">{{ item.email }}</p>
+            </div>
+            <div class="col-md-6">
+                <p class="text-muted mb-1 small">Celular</p>
+                <p class="fw-semibold mb-0">{{ item.celular }}</p>
+            </div>
+            <div class="col-md-4">
+                <p class="text-muted mb-1 small">Função</p>
+                <p class="fw-semibold mb-0">{{ item.funcao }}</p>
+            </div>
+            <div class="col-md-4">
+                <p class="text-muted mb-1 small">Status</p>
+                {% if item.status == 'Ativo' %}
+                <span class="badge bg-success">{{ item.status }}</span>
+                {% else %}
+                <span class="badge bg-secondary">{{ item.status }}</span>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                <p class="text-muted mb-1 small">Cadastrado em</p>
+                <p class="fw-semibold mb-0">{{ item.criado_em.strftime('%d/%m/%Y') if item.criado_em else '—' }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<a href="{{ url_for('usuarios_listar') }}" class="btn btn-outline-secondary">
+    <i class="bi bi-arrow-left me-2"></i>Voltar
+</a>
+
+{% endblock %}
