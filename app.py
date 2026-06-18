@@ -151,3 +151,67 @@ def usuarios_listar():
     lista_dados = execute_query(sql, fetch=True)
     return render_template('dashboard/usuarios/listar.html', dados=lista_dados)
 
+@app.route('/usuarios/cadastrar', methods=['GET', 'POST'])
+@login_required
+def usuarios_cadastrar():
+
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        cpf = request.form.get('cpf', '').strip()
+        data_nascimento = request.form.get('data_nascimento', '').strip() or None
+        email = request.form.get('email', '').strip()
+        celular = request.form.get('celular', '').strip()
+        cep = request.form.get('cep', '').strip()
+        logradouro = request.form.get('logradouro', '').strip()
+        numero = request.form.get('numero', '').strip()
+        complemento = request.form.get('complemento', '').strip()
+        bairro = request.form.get('bairro', '').strip()
+        cidade = request.form.get('cidade', '').strip()
+        estado = request.form.get('estado', '').strip()
+        senha = request.form.get('senha', '').strip()
+        confirmar_senha = request.form.get('confirmar_senha', '').strip()
+        funcao_id = request.form.get('funcao_id', '').strip()
+        status = request.form.get('status', '').strip()
+
+        if not all([nome, cpf, email, celular, estado, senha]):
+            flash('Preencha todos os campos obrigatórios.', 'danger')
+            return redirect(url_for('usuarios_cadastrar'))
+
+        if senha != confirmar_senha:
+            flash('As senhas não conferem.', 'danger')
+            return redirect(url_for('usuarios_cadastrar'))
+
+        if len(senha) < 8:
+            flash('A senha deve ter pelo menos 8 caracteres.', 'danger')
+            return redirect(url_for('usuarios_cadastrar'))
+        
+        sql = '''SELECT nome AS qtde FROM usuarios
+                WHERE email = %s OR cpf = %s;
+                '''
+        existente = execute_one(sql, (email, cpf))
+        if existente:
+            flash('E-mail ou CPF já cadastrados!', 'danger')
+            return redirect(url_for('usuarios_cadastrar'))
+        
+        senha_hash = generate_password_hash(senha)
+        
+        try:
+            execute_query(
+                """INSERT INTO usuarios (nome, cpf, data_nascimento, email, celular,
+                   cep, logradouro, numero, complemento, bairro, cidade, estado,
+                   senha, status, funcao_id)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""",
+                (nome, cpf, data_nascimento, email, celular,
+                 cep, logradouro, numero, complemento, bairro, cidade, estado,
+                 senha_hash, status, funcao_id)
+            )
+            flash('Usuário cadastrado com sucesso', 'success')
+            return redirect(url_for('usuarios_listar'))
+        except Exception as e:
+            flash(f'Erro ao criar Usuário: {e}', 'danger')
+            return redirect(url_for('usuarios_cadastrar'))
+
+    sql = 'SELECT id_funcao, nome FROM funcoes'
+    lista_funcoes = execute_query(sql, fetch=True)
+    return render_template('dashboard/usuarios/form.html', titulo='Cadastrar Usuário', modo='cadastrar', item=None, lista_funcoes=lista_funcoes)
+
