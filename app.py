@@ -215,3 +215,113 @@ def usuarios_cadastrar():
     lista_funcoes = execute_query(sql, fetch=True)
     return render_template('dashboard/usuarios/form.html', titulo='Cadastrar Usuário', modo='cadastrar', item=None, lista_funcoes=lista_funcoes)
 
+@app.route('/usuarios/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
+def usuarios_alterar(id):
+
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        cpf = request.form.get('cpf', '').strip()
+        data_nascimento = request.form.get('data_nascimento', '').strip() or None
+        email = request.form.get('email', '').strip()
+        celular = request.form.get('celular', '').strip()
+        cep = request.form.get('cep', '').strip()
+        logradouro = request.form.get('logradouro', '').strip()
+        numero = request.form.get('numero', '').strip()
+        complemento = request.form.get('complemento', '').strip()
+        bairro = request.form.get('bairro', '').strip()
+        cidade = request.form.get('cidade', '').strip()
+        estado = request.form.get('estado', '').strip()
+        senha = request.form.get('senha', '').strip()
+        confirmar_senha = request.form.get('confirmar_senha', '').strip()
+        funcao_id = request.form.get('funcao_id', '').strip()
+        status = request.form.get('status', '').strip()
+
+        if not all([nome, cpf, email, celular, estado]):
+            flash('Preencha todos os campos obrigatórios.', 'danger')
+            return redirect(url_for('usuarios_alterar', id=id))
+
+        existente = execute_one(
+            '''SELECT id_usuario FROM usuarios
+               WHERE (email = %s OR cpf = %s) AND id_usuario <> %s''',
+            (email, cpf, id)
+        )
+        if existente:
+            flash('E-mail ou CPF já cadastrados em outro usuário!', 'danger')
+            return redirect(url_for('usuarios_alterar', id=id))
+
+        if senha:
+            if senha != confirmar_senha:
+                flash('As senhas não conferem.', 'danger')
+                return redirect(url_for('usuarios_alterar', id=id))
+            if len(senha) < 8:
+                flash('A senha deve ter pelo menos 8 caracteres.', 'danger')
+                return redirect(url_for('usuarios_alterar', id=id))
+
+        try:
+            if senha:
+                execute_query(
+                    """UPDATE usuarios SET
+                       nome=%s, cpf=%s, data_nascimento=%s, email=%s, celular=%s,
+                       cep=%s, logradouro=%s, numero=%s, complemento=%s, bairro=%s,
+                       cidade=%s, estado=%s, senha=%s, status=%s, funcao_id=%s
+                       WHERE id_usuario=%s""",
+                    (nome, cpf, data_nascimento, email, celular,
+                     cep, logradouro, numero, complemento, bairro, cidade, estado,
+                     generate_password_hash(senha), status, funcao_id, id)
+                )
+            else:
+                execute_query(
+                    """UPDATE usuarios SET
+                       nome=%s, cpf=%s, data_nascimento=%s, email=%s, celular=%s,
+                       cep=%s, logradouro=%s, numero=%s, complemento=%s, bairro=%s,
+                       cidade=%s, estado=%s, status=%s, funcao_id=%s
+                       WHERE id_usuario=%s""",
+                    (nome, cpf, data_nascimento, email, celular,
+                     cep, logradouro, numero, complemento, bairro, cidade, estado,
+                     status, funcao_id, id)
+                )
+            flash('Usuário alterado com sucesso', 'success')
+            return redirect(url_for('usuarios_listar'))
+        except Exception as e:
+            flash(f'Erro ao alterar Usuário: {e}', 'danger')
+            return redirect(url_for('usuarios_alterar', id=id))
+
+    item = execute_one('SELECT * FROM usuarios WHERE id_usuario = %s', (id,))
+    if not item:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('usuarios_listar'))
+
+    lista_funcoes = execute_query('SELECT id_funcao, nome FROM funcoes', fetch=True)
+    return render_template('dashboard/usuarios/form.html', titulo='Alterar Usuário', modo='alterar', item=item, lista_funcoes=lista_funcoes)
+
+@app.route('/usuarios/visualizar/<int:id>')
+@login_required
+def usuarios_visualizar(id):
+    item = execute_one(
+        '''SELECT u.*, f.nome AS funcao
+           FROM usuarios AS u
+           INNER JOIN funcoes AS f ON u.funcao_id = f.id_funcao
+           WHERE u.id_usuario = %s''',
+        (id,)
+    )
+    if not item:
+        flash('Usuário não encontrado.', 'danger')
+        return redirect(url_for('usuarios_listar'))
+    return render_template('dashboard/usuarios/visualizar.html', item=item)
+
+@app.route('/usuarios/excluir/<int:id>', methods=['POST'])
+@login_required
+def usuarios_excluir(id):
+    try:
+        execute_query('DELETE FROM usuarios WHERE id_usuario = %s', (id,))
+        flash('Usuário excluído com sucesso.', 'success')
+    except Exception as e:
+        flash(f'Erro ao excluir usuário: {e}', 'danger')
+    return redirect(url_for('usuarios_listar'))
+
+@app.route('/usuarios/relatorio')
+@login_required
+def usuarios_relatorio():
+    return render_template('dashboard/usuarios/relatorio.html')
+
