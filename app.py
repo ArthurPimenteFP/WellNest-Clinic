@@ -554,3 +554,48 @@ def pacientes_excluir(id):
 @login_required
 def pacientes_relatorio():
     return render_template('dashboard/pacientes/relatorio.html')
+
+# ── Consultas ─────────────────────────────────────────────────────────────────
+
+@app.route('/consultas/listar')
+@login_required
+def consultas_listar():
+    # Busca todas as consultas com o nome do paciente e do médico
+    sql = "SELECT c.id_consulta, p.nome AS paciente, u.nome AS medico, c.especialidade, c.data, c.hora, c.status FROM consultas c INNER JOIN pacientes p ON c.paciente_id = p.id_paciente INNER JOIN usuarios u ON c.medico_id = u.id_usuario ORDER BY c.data DESC, c.hora DESC"
+
+    dados = execute_query(sql, fetch=True)
+    return render_template('dashboard/consultas/listar.html', dados=dados)
+
+@app.route('/consultas/cadastrar', methods=['GET', 'POST'])
+@login_required
+def consultas_cadastrar():
+    if request.method == 'POST':
+        paciente_id = request.form.get('paciente_id', '').strip()
+        medico_id = request.form.get('medico_id', '').strip()
+        data = request.form.get('data', '').strip()
+        hora = request.form.get('hora', '').strip()
+        especialidade = request.form.get('especialidade', '').strip()
+        status = request.form.get('status', 'Agendada').strip()
+        observacoes = request.form.get('observacoes', '').strip()
+
+        if not all([paciente_id, medico_id, data, hora, especialidade]):
+            flash('Preencha todos os campos obrigatórios.', 'danger')
+            return redirect(url_for('consultas_cadastrar'))
+
+        try:
+            execute_query(
+                '''INSERT INTO consultas (paciente_id, medico_id, data, hora, especialidade, status, observacoes)
+                   VALUES (%s, %s, %s, %s, %s, %s, %s)''',
+                (paciente_id, medico_id, data, hora, especialidade, status, observacoes)
+            )
+            flash('Consulta agendada com sucesso!', 'success')
+            return redirect(url_for('consultas_listar'))
+
+        except Exception as e:
+            flash(f'Erro ao agendar consulta: {e}', 'danger')
+            return redirect(url_for('consultas_cadastrar'))
+
+    lista_pacientes = execute_query('SELECT id_paciente, nome FROM pacientes ORDER BY nome', fetch=True)
+    lista_medicos = execute_query('SELECT id_usuario, nome FROM usuarios ORDER BY nome', fetch=True)
+    return render_template('dashboard/consultas/form.html', titulo='Agendar Consulta', modo='cadastrar',
+                           item=None, lista_pacientes=lista_pacientes, lista_medicos=lista_medicos)
