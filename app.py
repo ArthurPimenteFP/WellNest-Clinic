@@ -117,7 +117,7 @@ def logout():
 @app.route('/cadastro', methods=['GET', 'POST'])
 def cadastro():
     if request.method == 'POST':
-        # salvar usuário
+        # salvrar usuário
         return redirect(url_for('login'))
 
     return render_template('auth/register.html')
