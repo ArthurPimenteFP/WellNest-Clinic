@@ -599,3 +599,82 @@ def consultas_cadastrar():
     lista_medicos = execute_query('SELECT id_usuario, nome FROM usuarios ORDER BY nome', fetch=True)
     return render_template('dashboard/consultas/form.html', titulo='Agendar Consulta', modo='cadastrar',
                            item=None, lista_pacientes=lista_pacientes, lista_medicos=lista_medicos)
+
+
+
+@app.route('/consultas/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
+def consultas_alterar(id):
+    if request.method == 'POST':
+        paciente_id = request.form.get('paciente_id', '').strip()
+        medico_id = request.form.get('medico_id', '').strip()
+        data = request.form.get('data', '').strip()
+        hora = request.form.get('hora', '').strip()
+        especialidade = request.form.get('especialidade', '').strip()
+        status = request.form.get('status', 'Agendada').strip()
+        observacoes = request.form.get('observacoes', '').strip()
+
+        if not all([paciente_id, medico_id, data, hora, especialidade]):
+            flash('Preencha todos os campos obrigatórios.', 'danger')
+            return redirect(url_for('consultas_alterar', id=id))
+
+        try:
+            execute_query(
+                '''UPDATE consultas
+                   SET paciente_id=%s, medico_id=%s, data=%s, hora=%s,
+                       especialidade=%s, status=%s, observacoes=%s
+                   WHERE id_consulta=%s''',
+                (paciente_id, medico_id, data, hora, especialidade, status, observacoes, id))
+                
+            flash('Consulta alterada com sucesso!', 'success')
+            return redirect(url_for('consultas_listar'))
+
+        except Exception as e:
+            flash(f'Erro ao alterar consulta: {e}', 'danger')
+            return redirect(url_for('consultas_alterar', id=id))
+
+    item = execute_one("SELECT * FROM consultas WHERE id_consulta = %s", (id,))
+
+    if not item:
+        flash('Consulta não encontrada.', 'danger')
+        return redirect(url_for('consultas_listar'))
+
+    lista_pacientes = execute_query(
+        "SELECT id_paciente, nome FROM pacientes ORDER BY nome", fetch=True)
+
+    lista_medicos = execute_query(
+        "SELECT id_usuario, nome FROM usuarios ORDER BY nome", fetch=True)
+
+    return render_template('dashboard/consultas/form.html', titulo='Alterar Consulta', modo='alterar',
+        item=item, lista_pacientes=lista_pacientes, lista_medicos=lista_medicos)
+
+@app.route('/consultas/visualizar/<int:id>')
+@login_required
+def consultas_visualizar(id):
+    item = execute_one(
+        '''SELECT c.*, p.nome AS paciente, u.nome AS medico
+           FROM consultas AS c
+           INNER JOIN pacientes AS p ON c.paciente_id = p.id_paciente
+           INNER JOIN usuarios AS u ON c.medico_id = u.id_usuario
+           WHERE c.id_consulta = %s''',
+        (id,)
+    )
+    if not item:
+        flash('Consulta não encontrada.', 'danger')
+        return redirect(url_for('consultas_listar'))
+    return render_template('dashboard/consultas/visualizar.html', item=item)
+
+@app.route('/consultas/excluir/<int:id>', methods=['POST'])
+@login_required
+def consultas_excluir(id):
+    execute_query("DELETE FROM consultas WHERE id_consulta = %s", (id,))
+    flash('Consulta removida com sucesso.', 'success')
+    return redirect(url_for('consultas_listar'))
+
+@app.route('/consultas/relatorio')
+@login_required
+def consultas_relatorio():
+    return render_template('dashboard/consultas/relatorio.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
