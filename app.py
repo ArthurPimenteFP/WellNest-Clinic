@@ -464,4 +464,93 @@ def pacientes_listar():
     dados = execute_query("SELECT * FROM pacientes ORDER BY nome", fetch=True)
     return render_template('dashboard/pacientes/listar.html', dados=dados)
 
+@app.route('/pacientes/cadastrar', methods=['GET', 'POST'])
+@login_required
+def pacientes_cadastrar():
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        cpf = request.form.get('cpf')
+        data_nascimento = request.form.get('data_nascimento')
+        telefone = request.form.get('telefone')
+        email = request.form.get('email')
+        convenio = request.form.get('convenio')
+        tipo_sanguineo = request.form.get('tipo_sanguineo')
+        cep = request.form.get('cep')
+        logradouro = request.form.get('logradouro')
+        numero = request.form.get('numero')
+        complemento = request.form.get('complemento')
+        bairro = request.form.get('bairro')
+        cidade = request.form.get('cidade')
+        estado = request.form.get('estado')
 
+        paciente_existente = execute_one(
+            "SELECT id_paciente FROM pacientes WHERE cpf = %s",
+            (cpf,)
+        )
+
+        if paciente_existente:
+            flash('Já existe um paciente cadastrado com este CPF.', 'danger')
+            return redirect(url_for('pacientes_cadastrar'))
+
+        execute_query(
+            "INSERT INTO pacientes (nome, cpf, data_nascimento, telefone, email, convenio, tipo_sanguineo, cep, logradouro, numero, complemento, bairro, cidade, estado) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+            (nome, cpf, data_nascimento, telefone, email, convenio, tipo_sanguineo, cep, logradouro, numero, complemento, bairro, cidade, estado)
+        )
+
+        flash('Paciente cadastrado com sucesso!', 'success')
+        return redirect(url_for('pacientes_listar'))
+
+    return render_template('dashboard/pacientes/form.html', modo='cadastrar')
+
+@app.route('/pacientes/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
+def pacientes_alterar(id):
+    item = execute_one("SELECT * FROM pacientes WHERE id_paciente = %s", (id,))
+
+    if not item:
+        flash('Paciente não encontrado!', 'warning')
+        return redirect(url_for('pacientes_listar'))
+
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        cpf = request.form.get('cpf')
+        data_nascimento = request.form.get('data_nascimento')
+        telefone = request.form.get('telefone')
+        email = request.form.get('email')
+        convenio = request.form.get('convenio')
+        tipo_sanguineo = request.form.get('tipo_sanguineo')
+        cep = request.form.get('cep')
+        logradouro = request.form.get('logradouro')
+        numero = request.form.get('numero')
+        complemento = request.form.get('complemento')
+        bairro = request.form.get('bairro')
+        cidade = request.form.get('cidade')
+        estado = request.form.get('estado')
+
+        execute_query(
+            "UPDATE pacientes SET nome=%s, cpf=%s, data_nascimento=%s, telefone=%s, email=%s, convenio=%s, tipo_sanguineo=%s, cep=%s, logradouro=%s, numero=%s, complemento=%s, bairro=%s, cidade=%s, estado=%s WHERE id_paciente=%s",
+            (nome, cpf, data_nascimento, telefone, email, convenio, tipo_sanguineo, cep, logradouro, numero, complemento, bairro, cidade, estado, id)
+        )
+
+        flash('Paciente atualizado com sucesso!', 'success')
+        return redirect(url_for('pacientes_listar'))
+
+    return render_template('dashboard/pacientes/form.html', modo='alterar', item=item)
+
+@app.route('/pacientes/visualizar/<int:id>')
+@login_required
+def pacientes_visualizar(id):
+    item = execute_one("SELECT * FROM pacientes WHERE id_paciente = %s", (id,))
+    return render_template('dashboard/pacientes/visualizar.html', item=item)
+
+@app.route('/pacientes/excluir/<int:id>', methods=['POST'])
+@login_required
+def pacientes_excluir(id):
+    execute_query("DELETE FROM pacientes WHERE id_paciente = %s", (id,))
+    flash('Paciente removido com sucesso!', 'success')
+    return redirect(url_for('pacientes_listar'))
+
+@app.route('/pacientes/relatorio')
+@login_required
+def pacientes_relatorio():
+    return render_template('dashboard/pacientes/relatorio.html')
