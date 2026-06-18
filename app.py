@@ -458,3 +458,10 @@ def funcoes_excluir(id):
 def funcoes_relatorio():
     return render_template('dashboard/funcoes/relatorio.html')
 
+@app.route('/pacientes/listar')
+@login_required
+def pacientes_listar():
+    dados = execute_query("SELECT * FROM pacientes ORDER BY nome", fetch=True)
+    return render_template('dashboard/pacientes/listar.html', dados=dados)
+
+
