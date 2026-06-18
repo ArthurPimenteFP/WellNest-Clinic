@@ -325,3 +325,136 @@ def usuarios_excluir(id):
 def usuarios_relatorio():
     return render_template('dashboard/usuarios/relatorio.html')
 
+# ── Funções ───────────────────────────────────────────────────────────────────
+
+@app.route('/funcoes/listar')
+@login_required
+def funcoes_listar():
+    sql = '''
+            SELECT 
+                id_funcao, 
+                nome, 
+                status, 
+                descricao, 
+                gerenciar_funcao,
+                gerenciar_usuario,
+                gerenciar_paciente,
+                gerenciar_consulta,
+                criado_em,
+                alterado_em
+            FROM funcoes
+            ORDER BY id_funcao DESC;
+        '''
+    lista_dados = execute_query(sql, fetch=True)
+    return render_template('dashboard/funcoes/listar.html', 
+    dados=lista_dados)
+
+@app.route('/funcoes/cadastrar', methods=['GET', 'POST'])
+@login_required
+def funcoes_cadastrar():
+    if request.method == 'POST':
+        nome = request.form.get('nome', '').strip()
+        status = request.form.get('status', 'Ativo')
+        descricao = request.form.get('descricao', '').strip()
+        gerenciar_funcao = 1 if request.form.get('gerenciar_funcao') else 0
+        gerenciar_usuario = 1 if request.form.get('gerenciar_usuario') else 0
+        gerenciar_paciente = 1 if request.form.get('gerenciar_paciente') else 0
+        gerenciar_consulta = 1 if request.form.get('gerenciar_consulta') else 0
+
+        if not nome:
+            flash('O campo <b>NOME</b> é obrigatório', 'danger')
+            return redirect(url_for('funcoes_cadastrar'))
+
+        try:
+            sql = '''INSERT INTO funcoes (nome, status, descricao, gerenciar_funcao, gerenciar_usuario, gerenciar_paciente, gerenciar_consulta)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s);
+                '''
+            dados = (nome, status, descricao, gerenciar_funcao, gerenciar_usuario, gerenciar_paciente, gerenciar_consulta)
+            
+            execute_query(sql, dados)
+            flash(f'A função <b>{nome}</b> inserida com sucesso!', 'success')
+            return redirect(url_for('funcoes_listar'))
+            
+        except Exception as e:
+            flash(f'Erro ao salvar:{e}', 'danger')
+            return redirect(url_for('funcoes_cadastrar'))
+    
+    return render_template('dashboard/funcoes/form.html', titulo='Cadastrar Função', modo='cadastrar', item=None)
+
+
+@app.route('/funcoes/alterar/<int:id>', methods=['GET', 'POST'])
+@login_required
+def funcoes_alterar(id):
+    item = execute_one(
+        "SELECT * FROM funcoes WHERE id_funcao = %s",
+        (id,)
+    )
+
+    if request.method == 'POST':
+        nome = request.form.get('nome')
+        status = request.form.get('status')
+        descricao = request.form.get('descricao')
+        gerenciar_funcao = 1 if request.form.get('gerenciar_funcao') else 0
+        gerenciar_usuario = 1 if request.form.get('gerenciar_usuario') else 0
+        gerenciar_paciente = 1 if request.form.get('gerenciar_paciente') else 0
+        gerenciar_consulta = 1 if request.form.get('gerenciar_consulta') else 0
+
+        # Atualiza os dados da função selecionada
+        execute_query(
+            """
+            UPDATE funcoes
+            SET nome=%s,
+                status=%s,
+                descricao=%s,
+                gerenciar_funcao=%s,
+                gerenciar_usuario=%s,
+                gerenciar_paciente=%s,
+                gerenciar_consulta=%s
+            WHERE id_funcao=%s
+            """,
+            (
+                nome,
+                status,
+                descricao,
+                gerenciar_funcao,
+                gerenciar_usuario,
+                gerenciar_paciente,
+                gerenciar_consulta,
+                id
+            )
+        )
+
+        flash('Função atualizada!', 'success')
+        return redirect(url_for('funcoes_listar'))
+
+    return render_template(
+        'dashboard/funcoes/form.html',
+        modo='alterar',
+        item=item
+    )
+
+
+@app.route('/funcoes/visualizar/<int:id>')
+@login_required
+def funcoes_visualizar(id):
+    item = execute_one(
+        "SELECT * FROM funcoes WHERE id_funcao = %s",
+        (id,)
+    )
+    return render_template('dashboard/funcoes/visualizar.html', item=item)
+
+
+@app.route('/funcoes/excluir/<int:id>', methods=['POST'])
+@login_required
+def funcoes_excluir(id):
+    execute_query(
+        "DELETE FROM funcoes WHERE id_funcao = %s", (id,)
+    )
+    flash('Função removida com sucesso.', 'success')
+    return redirect(url_for('funcoes_listar'))
+
+@app.route('/funcoes/relatorio')
+@login_required
+def funcoes_relatorio():
+    return render_template('dashboard/funcoes/relatorio.html')
+
