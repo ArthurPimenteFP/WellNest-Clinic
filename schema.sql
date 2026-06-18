@@ -1,13 +1,3 @@
-
--- SCHEMA.SQL
-
--- Este script:
--- 1. Cria o banco wellnest_clinic.
--- 2. Cria as tabelas principais do sistema.
--- 3. Define chaves primárias e estrangeiras.
--- 4. Define regras de integridade e relacionamentos.
--- 5. Estrutura os dados de usuários, funções, pacientes e consultas.
-
 -- DROP DATABASE IF EXISTS wellnest_clinic;
 
 CREATE DATABASE IF NOT EXISTS wellnest_clinic
@@ -15,23 +5,24 @@ CREATE DATABASE IF NOT EXISTS wellnest_clinic
 
 USE wellnest_clinic;
 
--- Tabela de funções (perfis de acesso do sistema)
+-- DROP TABLE IF EXISTS funcoes;
 CREATE TABLE IF NOT EXISTS funcoes (
     id_funcao BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(50) NOT NULL UNIQUE,
     status ENUM('Ativo', 'Inativo') DEFAULT 'Ativo',
     descricao VARCHAR(255),
-    gerenciar_usuario BOOLEAN DEFAULT 0,
-    gerenciar_funcao  BOOLEAN DEFAULT 0,
+    gerenciar_funcao   BOOLEAN DEFAULT 0,
+    gerenciar_usuario  BOOLEAN DEFAULT 0,
     gerenciar_paciente BOOLEAN DEFAULT 0,
     gerenciar_consulta BOOLEAN DEFAULT 0,
 
-    -- logs
+    -- log
     criado_em   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Tabela de usuários do sistema (funcionários da clínica)
+-- DROP TABLE IF EXISTS usuarios;
 CREATE TABLE IF NOT EXISTS usuarios (
     id_usuario BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome       VARCHAR(255) NOT NULL,
@@ -54,13 +45,15 @@ CREATE TABLE IF NOT EXISTS usuarios (
 
     -- logs
     criado_em   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
 
+    -- Cria o relacionamento entre tabelas.
     CONSTRAINT fk_usuario_funcao
         FOREIGN KEY (funcao_id) REFERENCES funcoes (id_funcao)
 );
 
--- Tabela de pacientes da clínica
+-- DROP TABLE IF EXISTS pacientes;
 CREATE TABLE IF NOT EXISTS pacientes (
     id_paciente BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     nome        VARCHAR(255) NOT NULL,
@@ -80,10 +73,11 @@ CREATE TABLE IF NOT EXISTS pacientes (
 
     -- logs
     criado_em   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Tabela de consultas
+-- DROP TABLE IF EXISTS consultas;
 CREATE TABLE IF NOT EXISTS consultas (
     id_consulta  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     paciente_id  BIGINT UNSIGNED NOT NULL,
@@ -96,7 +90,8 @@ CREATE TABLE IF NOT EXISTS consultas (
 
     -- logs
     criado_em   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    alterado_em DATETIME DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP,
 
     CONSTRAINT fk_consulta_paciente
         FOREIGN KEY (paciente_id) REFERENCES pacientes (id_paciente),
@@ -105,9 +100,9 @@ CREATE TABLE IF NOT EXISTS consultas (
 );
 
 -- Dados iniciais: funções padrão da clínica
-INSERT IGNORE INTO funcoes (nome, status, descricao, gerenciar_usuario, gerenciar_funcao, gerenciar_paciente, gerenciar_consulta)
+INSERT IGNORE INTO funcoes (nome, status, descricao, gerenciar_funcao, gerenciar_usuario, gerenciar_paciente, gerenciar_consulta)
 VALUES
     ('Administrador', 'Ativo', 'Acesso total ao sistema da clínica.',             1, 1, 1, 1),
     ('Médico',        'Ativo', 'Pode visualizar e gerenciar suas consultas.',      0, 0, 1, 1),
     ('Enfermeiro',    'Ativo', 'Pode visualizar pacientes e consultas.',           0, 0, 1, 1),
-    ('Recepcionista', 'Ativo', 'Pode cadastrar pacientes e agendar consultas.',    0, 0, 1, 1);
+    ('Recepcionista', 'Ativo', 'Pode cadastrar pacientes e agendar consultas.',    0, 0, 1, 1)

@@ -61,7 +61,7 @@ CONCEITOS IMPORTANTES:
                         <td>{{ item.especialidade }}</td>
                         <td>
                             {{ item.data.strftime('%d/%m/%Y') if item.data else '' }}<br>
-                            <small class="text-muted">{{ item.hora.strftime('%H:%M') if item.hora else '' }}</small>
+                            <small class="text-muted">{{ item.hora }}</small>
                         </td>
                         <td>
                             <!-- CONDIÇÃO LÓGICA -->

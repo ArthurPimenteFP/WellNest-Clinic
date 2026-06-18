@@ -1,18 +1,3 @@
-"""
-DB.PY - CAMADA DE ACESSO AO BANCO DE DADOS
-
-Responsabilidades:
-- Criar e gerenciar o pool de conexões MySQL.
-- Executar consultas SQL de forma centralizada.
-- Controlar commit e rollback.
-- Inicializar o banco usando o schema.sql.
-- Fornecer funções reutilizáveis para todo o sistema.
-
-OBSERVAÇÃO:
-O arquivo já possuía comentários detalhados. Este cabeçalho foi adicionado
-para documentação geral do módulo.
-"""
-
 # db.py — Módulo central de acesso ao banco de dados
 # Qualquer arquivo que precise do banco importa apenas este módulo
 
@@ -40,7 +25,7 @@ _pool = None
 # Pool criado uma única vez quando o módulo é carregado pela primeira vez.
 # conn.close() devolve a conexão ao pool — não fecha fisicamente.
 def criar_pool():
-    global _pool
+    global _pool # Chama a Variavel global
 
     if _pool is None:
         _pool = pooling.MySQLConnectionPool(
@@ -55,7 +40,7 @@ def get_connection():
     """Retorna uma conexão do pool. Levanta Exception em caso de falha."""
     try:
         if _pool is None:
-            criar_pool()
+            criar_pool() # Garante que teremos um pool
         return _pool.get_connection()
     except Error as e:
         raise Exception(f'Não foi possível obter conexão do pool: {e}')
@@ -104,13 +89,12 @@ def execute_one(sql, params=None):
 
 
 def iniciar_bd():
-    """Cria o banco e todas as tabelas ao iniciar a aplicação."""
     try:
         conn = mysql.connector.connect(
-            host='127.0.0.1',
-            port=3307,
-            user='root',
-            password=''
+            host = '127.0.0.1',
+            port = 3307,
+            user = 'root',
+            password = ''
         )
         cursor = conn.cursor()
 
@@ -118,7 +102,8 @@ def iniciar_bd():
         with open(arquivo_sql, 'r', encoding='utf-8') as f:
             script_sql = f.read()
 
-        # Executa cada statement separadamente
+        # multi=True pega cada sql; e separa para execução
+        # fazendo cada comando ser executado separado
         for stmt in script_sql.split(';'):
             stmt = stmt.strip()
             if stmt:

@@ -46,7 +46,7 @@ CONCEITOS IMPORTANTES:
             <div class="col-md-6"><p class="text-muted mb-1 small">Médico</p><p class="fw-semibold mb-0">{{ item.medico }}</p></div>
             <div class="col-md-4"><p class="text-muted mb-1 small">Especialidade</p><p class="fw-semibold mb-0">{{ item.especialidade }}</p></div>
             <div class="col-md-4"><p class="text-muted mb-1 small">Data</p><p class="fw-semibold mb-0">{{ item.data.strftime('%d/%m/%Y') if item.data else '—' }}</p></div>
-            <div class="col-md-4"><p class="text-muted mb-1 small">Hora</p><p class="fw-semibold mb-0">{{ item.hora.strftime('%H:%M') if item.hora else '—' }}</p></div>
+            <div class="col-md-4"><p class="text-muted mb-1 small">Hora</p><p class="fw-semibold mb-0">{{ item.hora if item.hora else '—' }}</p>
             <div class="col-md-4">
                 <p class="text-muted mb-1 small">Status</p>
                 <!-- CONDIÇÃO LÓGICA -->
